@@ -1,3 +1,4 @@
+import { DownloadBanner } from '../components/DownloadBanner';
 import { Bell, CalendarPlus, CheckSquare, NotebookPen, Plus } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../components/AppContext';
@@ -35,6 +36,7 @@ export function Dashboard() {
       <div className="mt-1 flex flex-wrap items-baseline gap-x-4 gap-y-1"><h1 className="text-2xl font-semibold sm:text-3xl">{weekdayName(h.weekday, s.language)}, {hijriLabel(h, s)}</h1></div>
       <div className="mt-1 text-sm opacity-90">{gregLabel(today, s)} · {MONTH_EN[h.month - 1]} <span className="ar">{MONTH_AR[h.month - 1]}</span> <span className="num-ar">{num(h.year, s)}</span> H {h.confirmed ? '· confirmed date' : ''}</div>
     </div>
+    <DownloadBanner />
     <div className="flex flex-wrap gap-2">
       <Button variant="soft" onClick={() => openEditor({ kind: 'task' })}><CheckSquare size={16} />Add task</Button>
       <Button variant="soft" onClick={() => openEditor({ kind: 'event' })}><CalendarPlus size={16} />Add event</Button>

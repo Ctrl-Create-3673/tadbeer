@@ -10,7 +10,7 @@ permissions: { contents: write }
 jobs:
   mac:
     if: github.event_name == 'push' || inputs.platform != 'win'
-    runs-on: macos-26
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

@@ -1,4 +1,4 @@
-import { Bell, MessageSquare, CalendarDays, CalendarRange, CheckSquare, FileDown, LayoutDashboard, Menu, NotebookPen, Plus, Search, Settings as Cog, Star, X, CalendarPlus } from 'lucide-react';
+import { Bell, MessageSquare, CalendarDays, CalendarRange, CheckSquare, FileDown, LayoutDashboard, Menu, NotebookPen, Plus, Search, Settings as Cog, Star, X, CalendarPlus, Download } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { missingFontFiles } from '../styles/fonts.config';
@@ -19,6 +19,7 @@ const NAV = [
   { to: '/tasks', label: 'Tasks', icon: CheckSquare }, { to: '/events', label: 'Events', icon: Star },
   { to: '/notes', label: 'Notes', icon: NotebookPen }, { to: '/reminders', label: 'Reminders', icon: Bell },
   { to: '/planner', label: 'Planner', icon: CalendarRange }, { to: '/print', label: 'Print PDF', icon: FileDown },
+  { to: '/download', label: 'Get the app', icon: Download },
   { to: '/feedback', label: 'Feedback', icon: MessageSquare },
   { to: '/settings', label: 'Settings', icon: Cog },
 ];

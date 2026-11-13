@@ -11,7 +11,7 @@ import { app, auth } from './account';
  * Settings stay per device. Firestore's offline cache queues writes made while offline.
  */
 const SYNCED = STORES.filter((s) => s !== 'settings');
-const fs = initializeFirestore(app, { localCache: persistentLocalCache() }, 'default');
+export const fs = initializeFirestore(app, { localCache: persistentLocalCache() }, 'default');
 
 export interface CloudState { phase: 'off' | 'syncing' | 'ok' | 'error'; at?: string; error?: string; calendarFlag?: boolean }
 let state: CloudState = { phase: 'off' };

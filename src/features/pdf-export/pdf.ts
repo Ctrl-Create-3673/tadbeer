@@ -1,7 +1,7 @@
 import fontkit from '@pdf-lib/fontkit';
 import { PDFDocument, PDFHexString, beginText, endText, rgb, setFillingColor, setFontAndSize, setTextMatrix, showText, type PDFFont, type PDFPage } from 'pdf-lib';
 import { toArabicDigits, type HijriCalendar } from '../../services/hijri/engine';
-import { GREG_MONTH_EN, MONTH_AR, MONTH_EN, WEEKDAY_AR, WEEKDAY_EN } from '../../services/hijri/names';
+import { GREG_MONTH_EN, MONTH_EN, monthHeadingAr, WEEKDAY_AR, WEEKDAY_EN } from '../../services/hijri/names';
 import { fontById, type FontDef } from '../../styles/fonts.config';
 import type { CalEvent, FontRole, Task } from '../../types';
 import { occasionsFor } from '../../data/occasions';
@@ -16,7 +16,7 @@ export interface PdfResult { bytes: Uint8Array; warnings: string[]; pages: numbe
 
 const W = 841.89, H = 595.28, M = 28;
 const hex = (h: string) => rgb(parseInt(h.slice(1, 3), 16) / 255, parseInt(h.slice(3, 5), 16) / 255, parseInt(h.slice(5, 7), 16) / 255);
-const INK = hex('#12142a'), BRAND = hex('#3547d6'), BURG = hex('#d9503a'), GOLD = hex('#7b5cf0'), LINE = hex('#d5d8e8'), SOFT = hex('#f1f2fa'), MUTED = hex('#5c617c');
+const INK = hex('#26302b'), BRAND = hex('#4b6b52'), BURG = hex('#7a2e3b'), GOLD = hex('#a98122'), LINE = hex('#c9c7b8'), SOFT = hex('#f3f1e8'), MUTED = hex('#6b756e');
 
 type Kind = 'latin' | 'arabic' | 'digits';
 type Style = Record<Kind, FontRole>;
@@ -128,9 +128,9 @@ export async function generatePdf(o: PdfOptions): Promise<PdfResult> {
     page.drawRectangle({ x: M, y: y(70), width: 3, height: 40, color: BURG });
     w.draw(page, MONTH_EN[mo - 1], { x: M + 12, y: y(52), size: 24, color: INK });
     w.draw(page, range, { x: M + 12, y: y(68), size: 10, color: MUTED });
-    w.draw(page, MONTH_AR[mo - 1], { x: W / 2, y: y(58), size: 30, color: BRAND, align: 'center', style: S_UI });
+    w.draw(page, monthHeadingAr(mo, yr), { x: W / 2 + 40, y: y(58), size: 28, color: BRAND, align: 'center', style: S_UI });
     page.drawRectangle({ x: W - M - 62, y: y(78), width: 62, height: 50, color: BURG });
-    w.draw(page, toArabicDigits(yr), { x: W - M - 31, y: y(58), size: 22, color: rgb(1, 1, 1), align: 'center' });
+    w.draw(page, toArabicDigits(mo), { x: W - M - 31, y: y(58), size: 26, color: rgb(1, 1, 1), align: 'center' });
     w.draw(page, `${yr} H`, { x: W - M - 31, y: y(72), size: 9, color: rgb(1, 1, 1), align: 'center' });
     // weekday header
     const colW = (W - 2 * M) / 7, headTop = 88, headH = 26;

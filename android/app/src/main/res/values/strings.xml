@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Tadbeer</string>
+    <string name="title_activity_main">Tadbeer</string>
+    <string name="package_name">com.tadbeer.planner</string>
+    <string name="custom_url_scheme">com.tadbeer.planner</string>
+</resources>

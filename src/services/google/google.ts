@@ -1,3 +1,4 @@
+import { Capacitor } from '@capacitor/core';
 import { useSyncExternalStore } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -34,6 +35,7 @@ function loadGis() {
 
 /** Opens Google's consent popup. Must be called from a click handler. */
 export async function signIn(clientId: string): Promise<GoogleUser> {
+  if (Capacitor.isNativePlatform()) throw new Error('Google sign-in is not available inside the Android/iOS app yet. Open Tadbeer in your browser to use email reminders.');
   if (!clientId.trim()) throw new Error('Add your Google OAuth Client ID first.');
   await loadGis();
   const token = await new Promise<{ access_token: string; expires_in: number }>((res, rej) => {

@@ -2,7 +2,7 @@ import type { Category } from '../../types';
 import { getOne, save } from './db';
 
 /** Note categories requested in the spec. Task/event categories and all events start empty. */
-const NOTE_CATEGORIES = [['general', 'General Notes', '#3547d6'], ['meeting', 'Meeting Notes', '#1c8fc9'], ['personal', 'Personal Notes', '#7b5cf0'], ['important', 'Important Notes', '#d9503a']];
+const NOTE_CATEGORIES = [['general', 'General Notes', '#4b6b52'], ['meeting', 'Meeting Notes', '#2f7d95'], ['personal', 'Personal Notes', '#8e5a78'], ['important', 'Important Notes', '#7a2e3b']];
 export async function seedNoteCategories() {
   let seeded = false;
   try { seeded = !!localStorage.getItem('hlp-seeded'); } catch { /* storage blocked: fall through, ids make this idempotent */ }

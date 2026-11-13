@@ -1,3 +1,3 @@
-/** Weekday header colours (index 0 = Sunday), indigo, violet and coral tones. */
-export const WEEKDAY_COLORS = ['#6d4ce0', '#3547d6', '#d9503a', '#1c8fc9', '#7b5cf0', '#2b3a9e', '#c4553f'];
-export const EVENT_COLORS = ['#3547d6', '#1c8fc9', '#d9503a', '#7b5cf0', '#2b3a9e', '#c4553f', '#5c617c'];
+/** Weekday header colours (index 0 = Sunday), muted greens/teals with warm accents. */
+export const WEEKDAY_COLORS = ['#7d9470', '#2f7d95', '#c0643a', '#b8921f', '#0b7a75', '#4b6b63', '#8e5a78'];
+export const EVENT_COLORS = ['#4b6b52', '#2f7d95', '#c0643a', '#b8921f', '#7a2e3b', '#8e5a78', '#4b5563'];

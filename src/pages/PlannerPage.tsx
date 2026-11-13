@@ -6,7 +6,7 @@ import { gregRange } from '../features/calendar/range';
 import { getDay, useDayIndex } from '../features/calendar/useDayIndex';
 import { useCalendar, useToday } from '../hooks/useCalendar';
 import { toArabicDigits } from '../services/hijri/engine';
-import { MONTH_AR, MONTH_EN } from '../services/hijri/names';
+import { MONTH_AR, MONTH_EN, monthHeadingAr } from '../services/hijri/names';
 import { getOne, save, useCollection } from '../services/storage/db';
 import { useSettings } from '../services/storage/settings';
 import type { PlannerDoc } from '../types';
@@ -59,7 +59,7 @@ export function PlannerPage() {
         <IconButton label="Next" onClick={() => (tab === 'month' ? nav(1) : setY(y + 1))}><ChevronRight size={18} className="flip-rtl" /></IconButton></div>
     </div>
     {tab === 'month' ? <>
-      <div className="flex flex-wrap items-baseline gap-x-3"><h1 className="text-2xl font-semibold">{MONTH_EN[m - 1]}</h1><span className="ar text-2xl text-brand">{MONTH_AR[m - 1]}</span><span className="text-burgundy">{y} H</span><span className="text-sm text-muted">{gregRange(days[0].iso, days[days.length - 1].iso, s)}</span>
+      <div className="flex flex-wrap items-baseline gap-x-3"><h1 className="text-2xl font-semibold">{MONTH_EN[m - 1]}</h1><span className="ar text-2xl text-brand">{monthHeadingAr(m, y)}</span><span className="text-burgundy">{y} H</span><span className="text-sm text-muted">{gregRange(days[0].iso, days[days.length - 1].iso, s)}</span>
         {cal.monthIsConfirmed(y, m) && <Badge color="var(--brand)">Confirmed</Badge>}</div>
       <div className="overflow-x-auto"><div className="min-w-[56rem] overflow-hidden rounded-xl border border-line bg-surface"><WeekdayHeader />
         <div className="grid grid-cols-7">{Array.from({ length: lead }, (_, i) => <div key={'e' + i} className="min-h-44 border-e border-t border-line bg-bg/60" />)}

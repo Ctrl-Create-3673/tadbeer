@@ -130,3 +130,12 @@ button text remain English.
 ## Licence
 
 Third-party code and notices: see `THIRD-PARTY-NOTICES.md`. Choose and add a licence for this project's own code before publishing.
+
+## Android and iOS apps
+
+The same code runs inside native shells (Capacitor). The projects are in `android/` and `ios/`.
+
+- **Android APK, no setup:** on GitHub open Actions, pick "Build Android APK", press Run, then download `tadbeer-debug-apk` from the finished run. Install it on a phone (allow "install unknown apps"). To publish on Google Play you need a Play Console account ($25 once) and a signed release build.
+- **iOS:** needs a Mac with Xcode. Run `npm run cap:ios`, pick your team under Signing, press Run. Running on an iPhone for 7 days is free; App Store release needs an Apple Developer account ($99 a year).
+- After any code change run `npm run cap:sync`.
+- Limits in the native apps: Google sign-in and email reminders work only in the browser version for now (Google blocks sign-in inside embedded web views). Reminders fire only while the app is open, as on the web.

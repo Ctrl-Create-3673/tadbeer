@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useApp } from '../../components/AppContext';
 import { Badge, Button, Card, Field, Input } from '../../components/ui';
 import { GoogleAuthError, signIn, signOut, useGoogleSession } from '../../services/google/google';
-import { useSettings } from '../../services/storage/settings';
+import { defaultSettings, useSettings } from '../../services/storage/settings';
 import type { GoogleSettings } from '../../types';
 import { syncToGoogle } from './sync';
 
@@ -55,7 +55,7 @@ export function GoogleCard() {
     </div>
     <div className="mt-3 flex flex-wrap items-center gap-2"><Button disabled={busy || !me} onClick={sync}><RefreshCw size={14} className={busy ? 'animate-spin' : ''} />Sync now</Button>
       {g.lastSync && <span className="flex items-center gap-1 text-xs text-muted"><CalendarCheck size={13} />Last sync {new Date(g.lastSync).toLocaleString()}</span>}</div>
-    {!import.meta.env.VITE_GOOGLE_CLIENT_ID && <details className="mt-3 rounded-lg border border-line p-3 text-sm"><summary className="cursor-pointer font-medium">Owner setup (only needed once for this site)</summary>
+    {!defaultSettings().google.clientId && <details className="mt-3 rounded-lg border border-line p-3 text-sm"><summary className="cursor-pointer font-medium">Owner setup (only needed once for this site)</summary>
       <Field label="Google OAuth Client ID" hint="Public, not a secret. See the README for how to create one (2 minutes). Visitors never see this."><Input value={g.clientId} placeholder="123456789-abc….apps.googleusercontent.com" onChange={(e) => set({ clientId: e.target.value })} /></Field></details>}
     <p className="mt-3 text-xs text-muted">Limits: Google’s browser sign-in lasts about an hour, so reconnect to sync again — reminders already in your calendar keep emailing. Only upcoming items are kept in Google Calendar; past and completed items are removed. The app only changes events it created and never reads your other events. Reminders repeating by Hijri date sync as their next occurrence only. Your Google email notification settings (Calendar → Settings) still apply.</p>
   </Card>;

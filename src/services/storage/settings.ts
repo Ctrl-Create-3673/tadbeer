@@ -8,7 +8,7 @@ export const defaultSettings = (): Settings => ({
   language: 'en', numerals: 'western', calendarDisplay: 'hijri-first', weekStart: 0,
   timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC',
   defaultView: 'month', notifications: false,
-  google: { clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID || '654168282595-j04hglglbrkeefgn011hj7hnted43i7s.apps.googleusercontent.com', autoSync: true, emailAll: true, defaultTime: '09:00', email: '', name: '', lastSync: '' }, showOccasions: true, tourDone: false, theme: 'dark', fonts: { ...DEFAULT_ROLES },
+  google: { clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID || '654168282595-j04hglglbrkeefgn011hj7hnted43i7s.apps.googleusercontent.com', autoSync: true, emailAll: true, defaultTime: '09:00', email: '', name: '', lastSync: '' }, showOccasions: true, tourDone: false, theme: 'light', fonts: { ...DEFAULT_ROLES },
 });
 export const getSettings = (): Settings => { const d = defaultSettings(); const r = getOne<Settings>('settings', 'main'); return { ...d, ...r, google: { ...d.google, ...r?.google, clientId: r?.google?.clientId || d.google.clientId } }; };
 export function useSettings() {

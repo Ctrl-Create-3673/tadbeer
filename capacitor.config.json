@@ -1,8 +1,0 @@
-{
-  "appId": "com.tadbeer.planner",
-  "appName": "Tadbeer",
-  "webDir": "dist",
-  "backgroundColor": "#141815",
-  "android": { "allowMixedContent": false },
-  "ios": { "contentInset": "always" }
-}

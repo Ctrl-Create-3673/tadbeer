@@ -13,7 +13,7 @@ export function Splash() {
   }, []);
   if (gone) return null;
   return (
-    <div role="status" aria-label="Loading Tadbeer" onClick={() => setGone(true)} className="splash fixed inset-0 z-[100] grid place-items-center bg-[#141815]">
+    <div role="status" aria-label="Loading Tadbeer" onClick={() => setGone(true)} className="splash fixed inset-0 z-[100] grid place-items-center bg-[#f6f5f0]">
       <img src={`${import.meta.env.BASE_URL}tadbeer-square.svg`} alt="" width={220} height={220} className="splash-logo" />
     </div>
   );

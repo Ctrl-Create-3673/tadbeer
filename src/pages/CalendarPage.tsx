@@ -4,7 +4,7 @@ import { Badge, Button, Card, IconButton, Modal, Select } from '../components/ui
 import { useCalendar, useToday } from '../hooks/useCalendar';
 import { useMedia } from '../hooks/useMedia';
 import { addDaysIso } from '../services/hijri/engine';
-import { MONTH_AR, MONTH_EN, monthHeadingAr, WEEKDAY_AR, WEEKDAY_EN } from '../services/hijri/names';
+import { MONTH_AR, MONTH_EN, WEEKDAY_AR, WEEKDAY_EN } from '../services/hijri/names';
 import { useSettings } from '../services/storage/settings';
 import { CorrectionDialog } from '../features/calendar/CorrectionDialog';
 import { DayPanel } from '../features/calendar/DayPanel';
@@ -33,7 +33,7 @@ export function CalendarPage() {
         <div>
           <div className="flex flex-wrap items-baseline gap-x-3">
             <h1 className="text-2xl font-semibold sm:text-3xl">{view === 'year' ? <span className="num-ar">{num(h.year, s)}</span> : MONTH_EN[h.month - 1]}</h1>
-            {view !== 'year' && <span className="ar text-2xl text-brand sm:text-3xl">{monthHeadingAr(h.month, h.year)}</span>}
+            {view !== 'year' && <span className="ar text-2xl text-brand sm:text-3xl">{MONTH_AR[h.month - 1]}</span>}
             {view !== 'year' && <span className="text-xl text-burgundy"><span className="num-ar">{num(h.year, s)}</span> H</span>}
           </div>
           <div className="mt-1 flex items-center gap-2 text-sm text-muted">{gregRange(days[0].iso, days[days.length - 1].iso, s)}

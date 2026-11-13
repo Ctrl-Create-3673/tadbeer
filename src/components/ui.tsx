@@ -16,9 +16,9 @@ export const IconButton = ({ label, className, ...p }: ButtonHTMLAttributes<HTML
   <button type="button" aria-label={label} title={label} {...p} className={cx('inline-flex h-9 w-9 items-center justify-center rounded-lg hover:bg-brand-soft', className)} />;
 
 const field = 'w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm placeholder:text-muted';
-export const Input = (p: InputHTMLAttributes<HTMLInputElement>) => <input {...p} className={cx(field, p.className)} />;
+export const Input = (p: InputHTMLAttributes<HTMLInputElement>) => <input dir="auto" {...p} className={cx(field, p.className)} />;
 export const Select = (p: SelectHTMLAttributes<HTMLSelectElement>) => <select {...p} className={cx(field, p.className)} />;
-export const Textarea = (p: TextareaHTMLAttributes<HTMLTextAreaElement>) => <textarea {...p} className={cx(field, p.className)} />;
+export const Textarea = (p: TextareaHTMLAttributes<HTMLTextAreaElement>) => <textarea dir="auto" {...p} className={cx(field, p.className)} />;
 export function Field({ label, children, hint, className }: { label: string; children: ReactNode; hint?: string; className?: string }) {
   return <label className={cx('block', className)}><span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-muted">{label}</span>{children}{hint && <span className="mt-1 block text-xs text-muted">{hint}</span>}</label>;
 }

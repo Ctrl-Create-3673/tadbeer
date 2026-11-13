@@ -8,6 +8,7 @@ const STEPS: Step[] = [
   { target: 'nav-/calendar', title: 'Hijri calendar', text: 'The calendar shows the Hijri date first, with the Gregorian date beside it. Tap a day to see its occasions and add things to it.' },
   { target: 'quick-add', title: 'Add anything fast', text: 'Quick add creates a task, event, note or reminder. Reminders pop up while the app is open, and by email if you sign in with Google.' },
   { target: 'nav-/tasks', title: 'Tasks, events and notes', text: 'Tasks have due dates and priorities. Events can be all-day or timed. Notes keep your longer writing, and you can choose the font you write in.' },
+  { title: 'Write in Lisan ud-Dawat', text: 'Type in Lisan ud-Dawat or any Arabic-script text in titles, notes and planner boxes. It flows right to left by itself, and you can pick your writing font (for example Saifee) in Settings → Fonts.' },
   { target: 'search', title: 'Search everything', text: 'Press Ctrl K (or tap here) to find any task, event, note or reminder.' },
   { target: 'google', title: 'Email reminders', text: 'Sign in with Google and your upcoming items go to your own Google Calendar, so Google emails you the reminder.' },
   { target: 'nav-/print', title: 'Print a planner', text: 'Print PDF makes an A4 landscape planner for any Hijri month or the whole year, with your tasks and events on the right days.' },

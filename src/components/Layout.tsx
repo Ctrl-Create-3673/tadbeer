@@ -6,7 +6,7 @@ import { useCollection } from '../services/storage/db';
 import type { CalEvent, Note, Reminder, Task } from '../types';
 import { useReminderScheduler } from '../features/reminders/useScheduler';
 import { useAutoSync } from '../features/google/useAutoSync';
-import { useGoogleSession } from '../services/google/google';
+import { useAccount } from '../services/google/account';
 import { useGoogleLogin } from '../features/google/GoogleCard';
 import { useApp, type EditorKind } from './AppContext';
 import { Button, IconButton, Input, Modal } from './ui';
@@ -42,7 +42,7 @@ function GlobalSearch({ onClose }: { onClose: () => void }) {
 
 export function Layout() {
   const [menu, setMenu] = useState(false), [search, setSearch] = useState(false), [quick, setQuick] = useState(false);
-  const { openEditor } = useApp(); useReminderScheduler(); useAutoSync(); const me = useGoogleSession(); const gLogin = useGoogleLogin(); const nav = useNavigate();
+  const { openEditor } = useApp(); useReminderScheduler(); useAutoSync(); const me = useAccount(); const gLogin = useGoogleLogin(); const nav = useNavigate();
   useEffect(() => { const k = (e: KeyboardEvent) => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); setSearch(true); } }; document.addEventListener('keydown', k); return () => document.removeEventListener('keydown', k); }, []);
   const missing = missingFontFiles();
   const link = ({ isActive }: { isActive: boolean }) => cx('flex items-center gap-3 rounded-lg px-3 py-2 text-sm', isActive ? 'bg-brand text-bg' : 'hover:bg-brand-soft');
@@ -59,8 +59,8 @@ export function Layout() {
         <IconButton label="Open menu" className="md:hidden" onClick={() => setMenu(true)}><Menu size={20} /></IconButton>
         <button data-tour="search" onClick={() => setSearch(true)} className="flex flex-1 items-center gap-2 rounded-lg border border-line bg-surface px-3 py-2 text-start text-sm text-muted md:max-w-md"><Search size={16} />Search…<kbd className="ms-auto hidden text-xs sm:block">Ctrl K</kbd></button>
         <InstallButton compact />
-        <button data-tour="google" onClick={() => { if (me) { nav('/settings'); setTimeout(() => document.getElementById('google')?.scrollIntoView(), 150); } else void gLogin.login(); }} className="ms-auto flex items-center gap-2 rounded-lg border border-line px-2.5 py-2 text-sm hover:bg-brand-soft" title={me ? `Signed in as ${me.user.email}` : 'Sign in with Google for email reminders'}>
-          {me?.user.picture ? <img src={me.user.picture} alt="" referrerPolicy="no-referrer" className="h-5 w-5 rounded-full" /> : <Bell size={15} />}<span className="hidden sm:inline">{me ? me.user.email : 'Sign in with Google'}</span></button>
+        <button data-tour="google" onClick={() => { if (me) { nav('/settings'); setTimeout(() => document.getElementById('google')?.scrollIntoView(), 150); } else void gLogin.login(); }} className="ms-auto flex items-center gap-2 rounded-lg border border-line px-2.5 py-2 text-sm hover:bg-brand-soft" title={me ? `Signed in as ${me.email}` : 'Sign in with Google for email reminders'}>
+          {me?.picture ? <img src={me.picture} alt="" referrerPolicy="no-referrer" className="h-5 w-5 rounded-full" /> : <Bell size={15} />}<span className="hidden sm:inline">{me ? me.email : 'Sign in with Google'}</span></button>
         <div className="relative">
           <Button data-tour="quick-add" variant="primary" aria-haspopup="menu" aria-expanded={quick} onClick={() => setQuick(!quick)}><Plus size={16} /><span className="hidden sm:inline">Quick add</span></Button>
           {quick && <div role="menu" className="fade-in absolute end-0 top-full z-40 mt-1 grid w-44 gap-0.5 rounded-xl border border-line bg-surface p-1 shadow-lg">

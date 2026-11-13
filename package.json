@@ -9,7 +9,6 @@
     "preview": "vite preview",
     "test": "TZ=UTC vitest run",
     "typecheck": "tsc --noEmit",
-    "deploy:firebase": "npm run build && npx firebase-tools deploy --only hosting",
     "desktop:mac": "npm run build && electron-builder --mac --publish never",
     "desktop:win": "npm run build && electron-builder --win --publish never"
   },

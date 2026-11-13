@@ -15,6 +15,7 @@ import { PlannerPage } from './pages/PlannerPage';
 import { PrintPage } from './pages/PrintPage';
 import { RemindersPage } from './pages/RemindersPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { FeedbackPage } from './pages/FeedbackPage';
 import { TasksPage } from './pages/TasksPage';
 import { Splash } from './components/Splash';
 import { Tour } from './components/Tour';
@@ -26,7 +27,7 @@ function Shell() {
   return <HashRouter><Routes><Route element={<Layout />}>
     <Route index element={<Dashboard />} /><Route path="calendar" element={<CalendarPage />} /><Route path="tasks" element={<TasksPage />} />
     <Route path="events" element={<EventsPage />} /><Route path="notes" element={<NotesPage />} /><Route path="reminders" element={<RemindersPage />} />
-    <Route path="planner" element={<PlannerPage />} /><Route path="print" element={<PrintPage />} /><Route path="settings" element={<SettingsPage />} />
+    <Route path="planner" element={<PlannerPage />} /><Route path="print" element={<PrintPage />} /><Route path="feedback" element={<FeedbackPage />} /><Route path="settings" element={<SettingsPage />} />
   </Route></Routes><EditorHost /><Tour /></HashRouter>;
 }
 

@@ -1,4 +1,4 @@
-import { Bell, CalendarDays, CalendarRange, CheckSquare, FileDown, LayoutDashboard, Menu, NotebookPen, Plus, Search, Settings as Cog, Star, X, CalendarPlus } from 'lucide-react';
+import { Bell, MessageSquare, CalendarDays, CalendarRange, CheckSquare, FileDown, LayoutDashboard, Menu, NotebookPen, Plus, Search, Settings as Cog, Star, X, CalendarPlus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { missingFontFiles } from '../styles/fonts.config';
@@ -19,6 +19,7 @@ const NAV = [
   { to: '/tasks', label: 'Tasks', icon: CheckSquare }, { to: '/events', label: 'Events', icon: Star },
   { to: '/notes', label: 'Notes', icon: NotebookPen }, { to: '/reminders', label: 'Reminders', icon: Bell },
   { to: '/planner', label: 'Planner', icon: CalendarRange }, { to: '/print', label: 'Print PDF', icon: FileDown },
+  { to: '/feedback', label: 'Feedback', icon: MessageSquare },
   { to: '/settings', label: 'Settings', icon: Cog },
 ];
 
@@ -57,6 +58,7 @@ export function Layout() {
       <header className="sticky top-0 z-30 flex items-center gap-2 border-b border-line bg-bg/90 px-3 py-2 backdrop-blur md:px-6">
         <IconButton label="Open menu" className="md:hidden" onClick={() => setMenu(true)}><Menu size={20} /></IconButton>
         <button data-tour="search" onClick={() => setSearch(true)} className="flex flex-1 items-center gap-2 rounded-lg border border-line bg-surface px-3 py-2 text-start text-sm text-muted md:max-w-md"><Search size={16} />Search…<kbd className="ms-auto hidden text-xs sm:block">Ctrl K</kbd></button>
+        <InstallButton className="hidden sm:inline-flex" />
         <button data-tour="google" onClick={() => { if (me) { nav('/settings'); setTimeout(() => document.getElementById('google')?.scrollIntoView(), 150); } else void gLogin.login(); }} className="ms-auto flex items-center gap-2 rounded-lg border border-line px-2.5 py-2 text-sm hover:bg-brand-soft" title={me ? `Signed in as ${me.user.email}` : 'Sign in with Google for email reminders'}>
           {me?.user.picture ? <img src={me.user.picture} alt="" referrerPolicy="no-referrer" className="h-5 w-5 rounded-full" /> : <Bell size={15} />}<span className="hidden sm:inline">{me ? me.user.email : 'Sign in with Google'}</span></button>
         <div className="relative">

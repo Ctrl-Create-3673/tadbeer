@@ -10,9 +10,8 @@ export function DesktopLinks() {
   const a = 'inline-flex items-center gap-2 rounded-lg border border-line px-3 py-2 text-sm font-medium hover:bg-brand-soft';
   return <div className="grid gap-2"><div className="flex flex-wrap gap-2">
     <a className={a} href={`${REL}/Tadbeer-Setup.exe`}><Download size={14} />Windows (.exe)</a>
-    <a className={a} href={`${REL}/Tadbeer-mac-arm64.dmg`}><Download size={14} />Mac · Apple chip (.dmg)</a>
-    <a className={a} href={`${REL}/Tadbeer-mac-x64.dmg`}><Download size={14} />Mac · Intel (.dmg)</a></div>
-    <p className="text-xs text-muted">The installers are not code-signed yet. Windows: click “More info” then “Run anyway”. Mac: right-click the app and choose Open the first time. The website and “Download app” need none of this.</p></div>;
+    <a className={a} href={`${REL}/Tadbeer-mac-arm64.dmg`}><Download size={14} />Mac (.dmg)</a></div>
+    <p className="text-xs text-muted">The installers are not code-signed yet. Windows: click “More info” then “Run anyway”. Mac (Apple chip): right-click the app and choose Open the first time. On an older Intel Mac, use “Download app” in Chrome instead. The website and “Download app” need none of this.</p></div>;
 }
 
 /** Always visible until Tadbeer is installed. One tap where the browser allows it, otherwise a short how-to. */

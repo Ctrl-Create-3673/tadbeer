@@ -7,8 +7,11 @@ import type { CalEvent, Note, Reminder, Task } from '../types';
 import { useReminderScheduler } from '../features/reminders/useScheduler';
 import { useAutoSync } from '../features/google/useAutoSync';
 import { useGoogleSession } from '../services/google/google';
+import { useGoogleLogin } from '../features/google/GoogleCard';
 import { useApp, type EditorKind } from './AppContext';
 import { Button, IconButton, Input, Modal } from './ui';
+import { Tour } from './Tour';
+import { InstallButton } from './InstallButton';
 import { cx } from '../utils/format';
 
 const NAV = [
@@ -38,25 +41,26 @@ function GlobalSearch({ onClose }: { onClose: () => void }) {
 
 export function Layout() {
   const [menu, setMenu] = useState(false), [search, setSearch] = useState(false), [quick, setQuick] = useState(false);
-  const { openEditor } = useApp(); useReminderScheduler(); useAutoSync(); const me = useGoogleSession(); const nav = useNavigate();
+  const { openEditor } = useApp(); useReminderScheduler(); useAutoSync(); const me = useGoogleSession(); const gLogin = useGoogleLogin(); const nav = useNavigate();
   useEffect(() => { const k = (e: KeyboardEvent) => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); setSearch(true); } }; document.addEventListener('keydown', k); return () => document.removeEventListener('keydown', k); }, []);
   const missing = missingFontFiles();
   const link = ({ isActive }: { isActive: boolean }) => cx('flex items-center gap-3 rounded-lg px-3 py-2 text-sm', isActive ? 'bg-brand text-bg' : 'hover:bg-brand-soft');
-  const navList = <nav aria-label="Main" className="grid gap-1">{NAV.map(({ to, label, icon: I }) => <NavLink key={to} to={to} end={to === '/'} className={link} onClick={() => setMenu(false)}><I size={18} />{label}</NavLink>)}</nav>;
+  const navList = <nav aria-label="Main" className="grid gap-1">{NAV.map(({ to, label, icon: I }) => <NavLink key={to} to={to} end={to === '/'} data-tour={`nav-${to}`} className={link} onClick={() => setMenu(false)}><I size={18} />{label}</NavLink>)}</nav>;
   return <div className="flex min-h-full">
     <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-[70] focus:rounded focus:bg-surface focus:p-2">Skip to content</a>
     <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col gap-4 border-e border-line bg-surface p-4 md:flex">
       <div className="flex items-center gap-3"><img src={`${import.meta.env.BASE_URL}tadbeer-mark.svg`} alt="" width={36} height={36} /><div><div className="text-lg font-bold leading-tight tracking-wide text-brand">TADBEER</div><div className="ar text-sm leading-tight text-muted">تدبير</div></div></div>
       {navList}
+      <InstallButton className="mt-auto" />
     </aside>
     <div className="flex min-w-0 flex-1 flex-col">
       <header className="sticky top-0 z-30 flex items-center gap-2 border-b border-line bg-bg/90 px-3 py-2 backdrop-blur md:px-6">
         <IconButton label="Open menu" className="md:hidden" onClick={() => setMenu(true)}><Menu size={20} /></IconButton>
-        <button onClick={() => setSearch(true)} className="flex flex-1 items-center gap-2 rounded-lg border border-line bg-surface px-3 py-2 text-start text-sm text-muted md:max-w-md"><Search size={16} />Search…<kbd className="ms-auto hidden text-xs sm:block">Ctrl K</kbd></button>
-        <button onClick={() => { nav('/settings'); setTimeout(() => document.getElementById('google')?.scrollIntoView(), 150); }} className="ms-auto flex items-center gap-2 rounded-lg border border-line px-2.5 py-2 text-sm hover:bg-brand-soft" title={me ? `Signed in as ${me.user.email}` : 'Sign in with Google for email reminders'}>
-          {me?.user.picture ? <img src={me.user.picture} alt="" referrerPolicy="no-referrer" className="h-5 w-5 rounded-full" /> : <Bell size={15} />}<span className="hidden sm:inline">{me ? me.user.email : 'Email reminders'}</span></button>
+        <button data-tour="search" onClick={() => setSearch(true)} className="flex flex-1 items-center gap-2 rounded-lg border border-line bg-surface px-3 py-2 text-start text-sm text-muted md:max-w-md"><Search size={16} />Search…<kbd className="ms-auto hidden text-xs sm:block">Ctrl K</kbd></button>
+        <button data-tour="google" onClick={() => { if (me) { nav('/settings'); setTimeout(() => document.getElementById('google')?.scrollIntoView(), 150); } else void gLogin.login(); }} className="ms-auto flex items-center gap-2 rounded-lg border border-line px-2.5 py-2 text-sm hover:bg-brand-soft" title={me ? `Signed in as ${me.user.email}` : 'Sign in with Google for email reminders'}>
+          {me?.user.picture ? <img src={me.user.picture} alt="" referrerPolicy="no-referrer" className="h-5 w-5 rounded-full" /> : <Bell size={15} />}<span className="hidden sm:inline">{me ? me.user.email : 'Sign in with Google'}</span></button>
         <div className="relative">
-          <Button variant="primary" aria-haspopup="menu" aria-expanded={quick} onClick={() => setQuick(!quick)}><Plus size={16} /><span className="hidden sm:inline">Quick add</span></Button>
+          <Button data-tour="quick-add" variant="primary" aria-haspopup="menu" aria-expanded={quick} onClick={() => setQuick(!quick)}><Plus size={16} /><span className="hidden sm:inline">Quick add</span></Button>
           {quick && <div role="menu" className="fade-in absolute end-0 top-full z-40 mt-1 grid w-44 gap-0.5 rounded-xl border border-line bg-surface p-1 shadow-lg">
             {([['task', 'Task', CheckSquare], ['event', 'Event', CalendarPlus], ['note', 'Note', NotebookPen], ['reminder', 'Reminder', Bell]] as const).map(([k, l, I]) =>
               <button key={k} role="menuitem" className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-brand-soft" onClick={() => { setQuick(false); openEditor({ kind: k }); }}><I size={16} />{l}</button>)}</div>}
@@ -69,7 +73,7 @@ export function Layout() {
       {NAV.slice(0, 4).map(({ to, label, icon: I }) => <NavLink key={to} to={to} end={to === '/'} className={({ isActive }) => cx('flex flex-col items-center gap-0.5 py-2 text-[11px]', isActive ? 'text-brand' : 'text-muted')}><I size={20} />{label}</NavLink>)}
       <button className="flex flex-col items-center gap-0.5 py-2 text-[11px] text-muted" onClick={() => setMenu(true)}><Menu size={20} />More</button>
     </nav>
-    {menu && <div className="fixed inset-0 z-50 md:hidden" onMouseDown={(e) => e.target === e.currentTarget && setMenu(false)}><div className="absolute inset-0 bg-black/40" /><div role="dialog" aria-label="Menu" className="fade-in absolute inset-y-0 start-0 w-72 bg-surface p-4"><div className="mb-4 flex items-center justify-between"><b className="tracking-wide text-brand">TADBEER</b><IconButton label="Close menu" onClick={() => setMenu(false)}><X size={18} /></IconButton></div>{navList}</div></div>}
+    {menu && <div className="fixed inset-0 z-50 md:hidden" onMouseDown={(e) => e.target === e.currentTarget && setMenu(false)}><div className="absolute inset-0 bg-black/40" /><div role="dialog" aria-label="Menu" className="fade-in absolute inset-y-0 start-0 w-72 bg-surface p-4"><div className="mb-4 flex items-center justify-between"><b className="tracking-wide text-brand">TADBEER</b><IconButton label="Close menu" onClick={() => setMenu(false)}><X size={18} /></IconButton></div>{navList}<InstallButton className="mt-4" /></div></div>}
     {search && <GlobalSearch onClose={() => setSearch(false)} />}
   </div>;
 }

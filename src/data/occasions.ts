@@ -1,0 +1,60 @@
+// Annual occasions by Hijri month/day, transcribed by eye from the 1448H printed planner supplied by the owner.
+// Dates only: no layout, wording style or branding is reused. They repeat each Hijri year. Verify before relying on them.
+export type Occasion = readonly [month: number, day: number, title: string];
+
+export const OCCASIONS: readonly Occasion[] = [
+  [1, 1, 'Ashara Mubaraka begins'], [1, 1, 'Moulaya Abdullah Saheb (Khambat)'],
+  [1, 6, 'Zikr of the shahadat of Rasulullah (SAW)'], [1, 7, 'Zikr of the shahadat of Moulatona Fatema (SA)'],
+  [1, 7, 'URS 38th Dai Syedna Ismail Badruddin RA (Jamnagar)'], [1, 8, 'Zikr of the shahadat of Moulana Ali (AS)'],
+  [1, 9, 'Zikr of the shahadat of Moulana Hasan (AS)'], [1, 9, 'Laylat Ashura'], [1, 10, 'Youm Ashura'],
+  [1, 15, 'Moulaya Nuruddin Saheb (Dongam)'], [1, 16, 'URS 3rd Dai Syedna Hatim bin Syedna Ibrahim RA (Yemen)'],
+  [1, 17, 'URS 39th Dai Syedna Ibrahim Vajiuddin RA (Ujjain)'], [1, 23, 'URS Syedi Hasan Fir Saheb Shaheed RA'],
+  [1, 27, 'URS Syedi Fakhruddin Shaheed RA'],
+  [2, 1, 'URS 10th Dai Syedna Ali bin Syedna Husain RA (Yemen)'], [2, 3, 'URS 18th Dai Syedna Ali Shamshuddin RA (Yemen)'],
+  [2, 4, 'URS 49th Dai Syedna Abdutaiyyeb Zakiuddin RA (Burhanpur)'], [2, 8, 'Syednal Khattab bin Hasan Hamdani (Yemen)'],
+  [2, 20, 'Chelum of Imam Husain (SA)'], [2, 22, 'URS 8th Dai Syedna Husain bin Syedna Ali bin Mohammed RA (Yemen)'],
+  [2, 27, 'URS 23rd Dai Syedna Mohammed Izzuddin bin Syedna Hasan Badruddin RA (Yemen)'], [2, 28, 'Shahadat of Imam Hasan (SA)'],
+  [3, 2, 'URS 29th Dai Syedna Abdutaiyyeb Zakiuddin RA (Ahmedabad)'], [3, 10, 'URS 50th Dai Syedna Abdullah Badruddin RA (Surat)'],
+  [3, 12, 'Eid Milad-un-Nabi'], [3, 14, 'Ayyam al-Urs'], [3, 15, 'Ayyam al-Urs'],
+  [3, 16, 'URS 52nd Dai Syedna Mohammed Burhanuddin RA (Mumbai)'],
+  [3, 22, 'URS 6th Dai Syedna Ali bin Hanzala RA (Yemen)'], [3, 23, 'Moulaya Raj (Morbi); Syedi Qazi Khan (Halwad)'],
+  [3, 25, 'URS 30th Dai Syedna Ali Shamshuddin ibn Moulaya Hasan RA (Yemen)'],
+  [4, 4, 'Milad of Imam Uz Zamaan (SA)'], [4, 16, 'URS 25th Dai Syedna Jalal Shamsuddin ibn Hasan RA (Ahmedabad)'],
+  [4, 20, 'Milad of Syedna Mohammed Burhanuddin RA'], [4, 22, 'URS 36th Dai Syedna Musa Kalimuddin RA (Jamnagar)'],
+  [4, 27, 'URS 26th Dai Syedna Dawood bin Ajabshah Burhanuddin RA (Ahmedabad)'],
+  [5, 1, 'Syedna Ahmed bin Ali al-Mukarram Sulaihi QR (Yemen)'], [5, 3, 'Syedi Qazi Khan ibn Ali (Sidhpur)'],
+  [5, 8, 'M Wahid Bhai Saheb (Surat)'], [5, 10, 'Shahadat of Moulatena Fatematuz Zahra (SA)'],
+  [5, 16, 'Syedna Mohammed bin Idris Saheb QR (Yemen)'],
+  [6, 15, 'URS 27th Dai Syedna Dawood bin Qutub Shah Burhanuddin RA (Ahmedabad)'],
+  [6, 18, 'URS 42nd Dai Syedna Yusuf Najmuddin ibn Syedna Zakiuddin RA (Surat)'],
+  [6, 23, 'URS 34th Dai Syedna Ismail Badruddin bin Maulaya Raj RA (Jamnagar)'],
+  [6, 27, 'URS 32nd Dai Syedna Qutub Khan Qutbuddin Shaheed RA (Ahmedabad)'],
+  [7, 4, 'URS 37th Dai Syedna Noormohammed Nooruddin RA (Mandvi); Syedi Hasanji Badshah (Ujjain)'],
+  [7, 7, 'URS 28th Dai Syedna Shaikh Adam Safiuddin RA (Ahmedabad)'], [7, 13, 'Wiladat of Moulana Ali (AS)'],
+  [7, 13, 'Ayyam al-Bayz'], [7, 14, 'Ayyam al-Bayz'], [7, 14, 'Moulaya Yaqoob Saheb (Patan)'], [7, 15, 'Ayyam al-Bayz'],
+  [7, 18, 'URS 13th Dai Syedna Ali Shamsuddin RA (Yemen)'], [7, 19, 'URS 51st Dai Syedna Taher Saifuddin RA (Mumbai)'],
+  [7, 26, 'URS 47th Dai Syedna Abdul Qadir Najmuddin RA (Ujjain)'], [7, 27, 'Youm al-Mabaas ash-Shareef'],
+  [8, 1, 'URS 40th Dai Syedna Hebatullah Moiyyadfiddin RA (Ujjain)'], [8, 14, 'Washeq Raat: Lailatun Nisf'],
+  [8, 15, 'URS 20th Dai Syedna Hasan Badruddin RA (Yemen)'], [8, 16, 'URS 2nd Dai Syedna Ibrahim bin Syedna Husain al-Hamedi RA (Yemen)'],
+  [8, 29, 'URS 5th Dai Syedna Ali bin Moula Mohammed bin Walid RA (Yemen)'],
+  [9, 1, 'Ramadan begins (Rahmat, days 1 to 10)'], [9, 11, 'Maghfirat begins (days 11 to 20)'], [9, 21, 'Itq min an-Naar begins (days 21 to 30)'],
+  [9, 19, 'Youm Shahadat of Amir al-Mumineen (AS)'], [9, 22, 'Laylatul Qadr'], [9, 23, 'Youm Milad of Dai al-Asr'],
+  [10, 1, 'Eid al-Fitr'], [10, 5, 'Syedi Abdul Qader Hakimuddin QR (Burhanpur)'], [10, 6, 'URS 17th Dai Syedna Hasan Badruddin RA (Yemen)'],
+  [10, 7, 'Syedna Mohhammed bin Taher QR'], [10, 8, 'URS 15th Dai Syedna Abbas ibn Syedna Mohammed Masahid RA (Yemen)'],
+  [10, 9, 'URS 31st Dai Syedna Qasim Khan Zainuddin RA (Ahmedabad); M Jiwabhai Firkhanji (Lunavara)'],
+  [10, 10, 'URS 21st Dai Syedna Husain Husamuddin RA and 11th Dai Syedna Ibrahim Hamadan RA (Yemen)'],
+  [10, 27, 'URS Syedi Abdul Qadir Hakimuddin QR (Burhanpur)'], [10, 29, 'Syedi Bawa Mullakhan Saheb; Syedi Qasimkhan'],
+  [11, 1, 'URS 12th Dai Syedna Mohammed bin Syedna Hatim RA (Yemen)'], [11, 9, 'URS 33rd Dai Syedna Feerkhan Shujauddin RA (Ahmedabad)'],
+  [11, 12, 'URS 35th Dai Syedna Abdutaiyyed Zakiuddin RA (Jamnagar) and 43rd Dai Syedna Abdeali Saifuddin RA (Surat)'],
+  [11, 13, 'URS 9th Dai Syedna Ali bin Syedna Husain RA (Yemen)'], [11, 14, 'URS 45th Dai Syedna Taiyyeb Zainuddin RA; Rani Bai Saheba (Kutch)'],
+  [11, 19, 'URS 19th Dai Syedna Idris Imaduddin RA (Yemen)'], [11, 20, 'URS 22nd Dai Syedna Ali Shamsuddin RA (Yemen); Syedi Wali Bhai (Aurangabad)'],
+  [11, 23, 'URS 4th Dai Syedna Ali bin Syedna Hatim RA (Yemen)'], [11, 27, 'Milad of Syedna Taher Saifuddin RA'],
+  [11, 29, 'Nuzule Kaaba'],
+  [12, 9, 'Youm Arafah'], [12, 10, 'Eid al-Adha'], [12, 16, 'URS 24th Dai Syedna Yusuf Najmuddin ibn Sulaimanji RA (Yemen)'],
+  [12, 18, 'Eid Ghadeer Khum'], [12, 27, 'URS 48th Dai Syedna Abdulhusain Husamuddin RA (Ahmedabad) and 49th Dai Syedna Mohammed Burhanuddin RA (Surat)'],
+];
+
+const byKey = new Map<number, string[]>();
+for (const [m, d, t] of OCCASIONS) { const k = m * 100 + d; (byKey.get(k) ?? byKey.set(k, []).get(k)!).push(t); }
+const none: string[] = [];
+export const occasionsFor = (month: number, day: number) => byKey.get(month * 100 + day) ?? none;

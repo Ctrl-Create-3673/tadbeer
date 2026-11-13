@@ -41,7 +41,7 @@ export interface Settings extends Base {
   google: GoogleSettings;
   language: 'en' | 'ar'; numerals: 'arabic' | 'western'; calendarDisplay: 'hijri-first' | 'gregorian-first';
   weekStart: number; timezone: string; defaultView: 'month' | 'year' | 'week' | 'day';
-  notifications: boolean; theme: 'light' | 'dark'; fonts: Record<FontRole, string>;
+  notifications: boolean; showOccasions: boolean; tourDone: boolean; theme: 'light' | 'dark'; fonts: Record<FontRole, string>;
 }
 export interface BackupFile {
   app: 'hijri-life-planner'; version: 1; exportedAt: string;

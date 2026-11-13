@@ -4,11 +4,11 @@ import { toArabicDigits, type HijriCalendar } from '../../services/hijri/engine'
 import { GREG_MONTH_EN, MONTH_AR, MONTH_EN, WEEKDAY_AR, WEEKDAY_EN } from '../../services/hijri/names';
 import { fontById, type FontDef } from '../../styles/fonts.config';
 import type { CalEvent, FontRole, Task } from '../../types';
-import { WEEKDAY_COLORS } from '../../utils/theme';
+import { occasionsFor } from '../../data/occasions';
 
 export interface PdfOptions {
   cal: HijriCalendar; year: number; month: number | null; // month null = whole year
-  includeTasks: boolean; includeEvents: boolean; finalPage: boolean; weekStart: number;
+  includeTasks: boolean; includeEvents: boolean; includeOccasions?: boolean; finalPage: boolean; weekStart: number;
   tasks: Task[]; events: CalEvent[]; fonts: Record<FontRole, string>;
   loadFont: (def: FontDef) => Promise<ArrayBuffer>;
 }
@@ -115,8 +115,7 @@ export async function generatePdf(o: PdfOptions): Promise<PdfResult> {
   const y = (t: number) => H - t; // top-based coordinate helper
 
   const footer = (page: PDFPage, label: string, n: number) => {
-    const bandW = (W - 2 * M) / 7;
-    for (let i = 0; i < 7; i++) page.drawRectangle({ x: M + i * bandW, y: 30, width: bandW, height: 5, color: hex(WEEKDAY_COLORS[i]) });
+    page.drawRectangle({ x: M, y: 30, width: W - 2 * M, height: 1.5, color: BRAND });
     w.draw(page, 'Tadbeer', { x: M, y: 16, size: 8, color: MUTED });
     w.draw(page, label, { x: W / 2, y: 16, size: 8, color: MUTED, align: 'center' });
     w.draw(page, `Page ${n} of ${total}`, { x: W - M, y: 16, size: 8, color: MUTED, align: 'right' });
@@ -136,7 +135,7 @@ export async function generatePdf(o: PdfOptions): Promise<PdfResult> {
     // weekday header
     const colW = (W - 2 * M) / 7, headTop = 88, headH = 26;
     // blocks first, labels after, so calligraphic glyph overhang is never painted over by the next block
-    for (let i = 0; i < 7; i++) page.drawRectangle({ x: M + i * colW, y: y(headTop + headH), width: colW, height: headH, color: hex(WEEKDAY_COLORS[(o.weekStart + i) % 7]) });
+    page.drawRectangle({ x: M, y: y(headTop + headH), width: W - 2 * M, height: headH, color: INK });
     for (let i = 0; i < 7; i++) {
       const wd = (o.weekStart + i) % 7; const x = M + i * colW;
       w.draw(page, WEEKDAY_EN[wd], { x: x + 8, y: y(headTop + 17), size: 10, color: rgb(1, 1, 1) });
@@ -155,6 +154,7 @@ export async function generatePdf(o: PdfOptions): Promise<PdfResult> {
       w.draw(page, toArabicDigits(d.day), { x: x + colW - 6, y: top - 20, size: 17, color: d.day === 1 ? BURG : BRAND, align: 'right' });
       // user entries (optional)
       const lines: { text: string; color: ReturnType<typeof rgb> }[] = [];
+      if (o.includeOccasions !== false) for (const t of occasionsFor(mo, d.day)) lines.push({ text: t, color: BURG });
       if (o.includeEvents) for (const e of o.events) {
         const end = e.endDate ?? e.date;
         if (d.iso >= e.date && d.iso <= end) lines.push({ text: `${e.allDay || d.iso !== e.date ? '' : e.startTime + ' '}${e.title}`, color: hex(e.color) });
@@ -178,7 +178,7 @@ export async function generatePdf(o: PdfOptions): Promise<PdfResult> {
     const colGap = 18, colW = (W - 2 * M - 2 * colGap) / 3;
     ['Notes', 'Events', 'Reminders'].forEach((title, c) => {
       const x = M + c * (colW + colGap);
-      page.drawRectangle({ x, y: y(94), width: colW, height: 4, color: hex(WEEKDAY_COLORS[[0, 1, 5][c]]) });
+      page.drawRectangle({ x, y: y(94), width: colW, height: 4, color: BRAND });
       w.draw(page, title, { x, y: y(110), size: 10, color: MUTED });
       for (let ly = 122; ly < H - 52; ly += 22) page.drawLine({ start: { x, y: y(ly) }, end: { x: x + colW, y: y(ly) }, thickness: 0.4, color: LINE, dashArray: [1.5, 2] });
     });

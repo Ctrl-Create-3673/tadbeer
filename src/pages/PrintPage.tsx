@@ -22,7 +22,7 @@ export function PrintPage() {
       const { generatePdf } = await import('../features/pdf-export/pdf');
       const r = await generatePdf({
         cal, year, month: scope === 'month' ? month : null, finalPage, weekStart: s.weekStart, fonts: s.fonts,
-        includeTasks: content === 'tasks' || content === 'both', includeEvents: content === 'events' || content === 'both',
+        includeOccasions: s.showOccasions, includeTasks: content === 'tasks' || content === 'both', includeEvents: content === 'events' || content === 'both',
         tasks: getAll<Task>('tasks'), events: getAll<CalEvent>('events'),
         loadFont: async (def) => { const u = fontUrl(def); if (!u) throw new Error(`Font file “${def.file}” is missing from src/assets/fonts/.`); return (await fetch(u)).arrayBuffer(); },
       });

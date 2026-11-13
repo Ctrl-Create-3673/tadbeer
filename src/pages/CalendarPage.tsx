@@ -12,7 +12,6 @@ import { MonthGrid } from '../features/calendar/MonthGrid';
 import { gregRange } from '../features/calendar/range';
 import { getDay, useDayIndex } from '../features/calendar/useDayIndex';
 import { cx, num, weekdayName } from '../utils/format';
-import { WEEKDAY_COLORS } from '../utils/theme';
 
 type View = 'month' | 'year' | 'week' | 'day';
 
@@ -61,7 +60,7 @@ export function CalendarPage() {
       {view === 'week' && <div className="grid gap-px overflow-hidden rounded-xl border border-line bg-line md:grid-cols-7">{week.map((iso) => {
         const d = cal.fromIso(iso); const it = getDay(idx, iso);
         return <button key={iso} onClick={() => pick(iso)} className={cx('min-h-32 bg-surface p-2 text-start hover:bg-brand-soft md:min-h-72', iso === selected && 'bg-brand-soft')}>
-          <div className="-mx-2 -mt-2 mb-2 px-2 py-1 text-sm text-white" style={{ background: WEEKDAY_COLORS[d.weekday] }}>{weekdayName(d.weekday, 'en')} <span className="ar float-end">{WEEKDAY_AR[d.weekday]}</span></div>
+          <div className="-mx-2 -mt-2 mb-2 bg-brand-soft px-2 py-1 text-sm text-ink">{weekdayName(d.weekday, 'en')} <span className="ar float-end">{WEEKDAY_AR[d.weekday]}</span></div>
           <div className="flex items-baseline justify-between"><span className={cx('text-sm', iso === today && 'font-bold text-burgundy')}>{iso.slice(8)}/{iso.slice(5, 7)}</span><span className="num-ar text-2xl text-brand">{num(d.day, s)}</span></div>
           <ul className="mt-2 grid gap-1">{[...it.events.map((e) => ({ k: e.id, t: e.title, c: e.color })), ...it.tasks.map((t) => ({ k: t.id, t: t.title, c: 'var(--brand)' }))].map((e) => <li key={e.k} className="writing truncate rounded px-1 text-xs text-white" style={{ background: e.c }}>{e.t}</li>)}</ul></button>; })}</div>}
       {view === 'day' && !wide && <DayPanel iso={anchor} />}

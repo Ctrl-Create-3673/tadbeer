@@ -13,6 +13,7 @@ import { parseBackup } from '../utils/validate';
 import { useCalendar, useToday } from '../hooks/useCalendar';
 import { Link } from 'react-router-dom';
 import { GoogleCard } from '../features/google/GoogleCard';
+import { InstallButton } from '../components/InstallButton';
 
 const section = (t: string) => <h2 className="mb-3 text-lg font-semibold">{t}</h2>;
 
@@ -65,6 +66,8 @@ export function SettingsPage() {
       <Field label="Default calendar view"><Select value={s.defaultView} onChange={(e) => set('defaultView', e.target.value as Settings['defaultView'])}><option value="month">Month</option><option value="year">Year</option><option value="week">Week</option><option value="day">Day</option></Select></Field>
       <Field label="Timezone" hint="Used for “today” and reminder times."><Select value={s.timezone} onChange={(e) => set('timezone', e.target.value)}>{zones.map((z) => <option key={z}>{z}</option>)}</Select></Field>
       <Field label="Notifications"><label className="flex items-center gap-2 rounded-lg border border-line px-3 py-2 text-sm"><input type="checkbox" checked={s.notifications} onChange={(e) => notif(e.target.checked)} />Show browser notifications for due reminders</label></Field>
+      <Field label="Occasions"><label className="flex items-center gap-2 rounded-lg border border-line px-3 py-2 text-sm"><input type="checkbox" checked={s.showOccasions} onChange={(e) => set('showOccasions', e.target.checked)} />Show built-in occasions on the calendar and in PDFs</label></Field>
+      <Field label="App and help"><div className="flex flex-wrap items-center gap-2"><InstallButton /><Button onClick={() => window.dispatchEvent(new Event('tadbeer:tour'))}>Take the tour</Button></div></Field>
     </div><p className="mt-2 text-xs text-muted">Notifications work only while the app is open (see <Link className="underline" to="/reminders">Reminders</Link>).</p></Card>
 
     <Card>{section('Fonts')}

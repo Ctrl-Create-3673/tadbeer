@@ -1,0 +1,40 @@
+@import "tailwindcss";
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+:root {
+  --bg: #f6f5f0; --surface: #fffefa; --ink: #26302b; --muted: #66716a; --line: #dcdacd;
+  --brand: #4b6b52; --brand-soft: #e6ece3; --burgundy: #7a2e3b; --gold: #a98122;
+  color-scheme: light;
+}
+[data-theme=dark] {
+  --bg: #141815; --surface: #1c221e; --ink: #e7ebe4; --muted: #98a39b; --line: #2f3832;
+  --brand: #8fb08f; --brand-soft: #243026; --burgundy: #d58f9b; --gold: #d9b45a;
+  color-scheme: dark;
+}
+@theme inline {
+  --color-bg: var(--bg); --color-surface: var(--surface); --color-ink: var(--ink); --color-muted: var(--muted);
+  --color-line: var(--line); --color-brand: var(--brand); --color-brand-soft: var(--brand-soft);
+  --color-burgundy: var(--burgundy); --color-gold: var(--gold);
+}
+html, body, #root { height: 100%; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-ui, sans-serif); }
+input, select, textarea, button { font-family: inherit; }
+.ar { font-family: var(--font-arabic, sans-serif); direction: rtl; unicode-bidi: isolate; }
+.num-ar { font-family: var(--font-numerals, sans-serif); }
+.writing, .writing * { font-family: var(--font-writing, sans-serif); }
+:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+[dir=rtl] .flip-rtl { transform: scaleX(-1); }
+.fade-in { animation: fade .18s ease-out; }
+@keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .fade-in { animation: none; } * { transition: none !important; } }
+
+/* rich-text editor content */
+.rte { min-height: 14rem; outline: none; line-height: 1.7; }
+.rte h2 { font-size: 1.35em; font-weight: 700; margin: .6em 0 .3em; }
+.rte h3 { font-size: 1.15em; font-weight: 700; margin: .5em 0 .2em; }
+.rte ul { list-style: disc; padding-inline-start: 1.4em; } .rte ol { list-style: decimal; padding-inline-start: 1.4em; }
+.rte ul[data-checklist] { list-style: none; padding-inline-start: 0; }
+.rte ul[data-checklist] li { padding-inline-start: 1.7em; position: relative; }
+.rte ul[data-checklist] li::before { content: "\2610"; position: absolute; inset-inline-start: 0; cursor: pointer; color: var(--brand); }
+.rte ul[data-checklist] li[data-done]::before { content: "\2611"; }
+.rte ul[data-checklist] li[data-done] { text-decoration: line-through; color: var(--muted); }

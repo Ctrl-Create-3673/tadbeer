@@ -4,11 +4,11 @@ import { useSyncExternalStore } from 'react';
 import type { GoogleUser } from './google';
 
 // Public web config (not a secret). Access is controlled by Firebase "Authorized domains".
-const app = initializeApp({
+export const app = initializeApp({
   apiKey: 'AIzaSyBn6zcdzia-vk9_hzkyUIq5SCAhT-9ASE4', authDomain: 'tadbeer-edb8b.firebaseapp.com',
   projectId: 'tadbeer-edb8b', appId: '1:82450598863:web:20f628e60b6e027b5360ba',
 });
-const auth = getAuth(app);
+export const auth = getAuth(app);
 
 /** Step 1: who the user is. Name + email only, so Google shows no Calendar warning. Persists across visits. */
 let account: GoogleUser | null = null;

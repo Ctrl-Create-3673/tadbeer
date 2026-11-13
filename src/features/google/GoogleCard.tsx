@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useApp } from '../../components/AppContext';
 import { Badge, Button, Card, Field, Input } from '../../components/ui';
 import { signInAccount, signOutAccount, useAccount } from '../../services/google/account';
+import { setCalendarFlag, useCloud } from '../../services/google/cloud';
 import { GoogleAuthError, connectCalendar, disconnectCalendar, useGoogleSession } from '../../services/google/google';
 import { useSettings } from '../../services/storage/settings';
 import type { GoogleSettings } from '../../types';
@@ -27,7 +28,7 @@ export function GoogleButton({ className = '' }: { className?: string }) {
 }
 
 export function GoogleCard() {
-  const [s, update] = useSettings(); const g = s.google; const acc = useAccount(); const me = useGoogleSession(); const { toast } = useApp();
+  const [s, update] = useSettings(); const g = s.google; const acc = useAccount(); const cloud = useCloud(); const me = useGoogleSession(); const { toast } = useApp();
   const [busy, setBusy] = useState(false);
   const set = (p: Partial<GoogleSettings>) => update({ google: { ...g, ...p } });
   const run = async (fn: () => Promise<void>) => {
@@ -43,11 +44,13 @@ export function GoogleCard() {
       <Badge color="var(--brand)">Signed in</Badge>
       <Button size="sm" className="ms-auto" onClick={() => { disconnectCalendar(); void signOutAccount(); toast('Signed out'); }}><LogOut size={14} />Sign out</Button></div>
       : <div className="mb-3"><GoogleButton /></div>}
+    {acc && <p className={`mb-3 text-xs ${cloud.phase === 'error' ? 'text-burgundy' : 'text-muted'}`}>{cloud.phase === 'error' ? `Cloud sync problem: ${cloud.error}` : cloud.phase === 'syncing' ? 'Syncing your data across devices…' : `Your tasks, events, notes and reminders sync across every device you sign in on${cloud.at ? ` · last synced ${new Date(cloud.at).toLocaleTimeString()}` : ''}.`}</p>}
     {acc && <div className="mb-3 rounded-lg border border-line p-3 text-sm">
       <div className="mb-1 font-medium">Google Calendar {me ? <Badge color="var(--brand)">Connected</Badge> : <Badge color="var(--muted)">Not connected</Badge>}</div>
+      {!me && cloud.calendarFlag && <p className="mb-2 text-brand">Your calendar is connected on another device. Google only lets a device stay connected for about an hour, so tap Reconnect here (it takes one click).</p>}
       <p className="mb-2 text-muted">Optional. Connect to get your tasks, events and reminders as email notifications from your own Google Calendar. Google will ask for Calendar permission only now.</p>
-      {me ? <Button size="sm" onClick={() => { disconnectCalendar(); toast('Calendar disconnected'); }}>Disconnect</Button>
-        : <Button size="sm" disabled={busy} onClick={() => run(async () => { await connectCalendar(); toast('Google Calendar connected'); })}><CalendarCheck size={14} />Connect Google Calendar</Button>}
+      {me ? <Button size="sm" onClick={() => { disconnectCalendar(); setCalendarFlag(false); toast('Calendar disconnected'); }}>Disconnect</Button>
+        : <Button size="sm" disabled={busy} onClick={() => run(async () => { await connectCalendar(); setCalendarFlag(true); toast('Google Calendar connected'); })}><CalendarCheck size={14} />{cloud.calendarFlag ? 'Reconnect Google Calendar' : 'Connect Google Calendar'}</Button>}
     </div>}
     <div className="grid gap-3 sm:grid-cols-2">
       <Field label="Time for items without their own time" hint="A task or all-day event is placed at this time on its date, so the email arrives then.">

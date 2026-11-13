@@ -18,6 +18,20 @@ const snapshots = new Map<StoreName, Base[]>();
 const listeners = new Set<() => void>();
 const emit = (name: StoreName) => { snapshots.delete(name); listeners.forEach((l) => l()); };
 
+/** Optional cloud mirror (see services/google/cloud.ts). Remote changes come back through applyRemote(), which does not re-trigger it. */
+interface SyncHook { save(name: StoreName, row: Base): void; remove(name: StoreName, id: string): void }
+let hook: SyncHook | null = null;
+export const setSyncHook = (h: SyncHook | null) => { hook = h; };
+export async function applyRemote(name: StoreName, id: string, row: Base | null) {
+  const db = await getDb();
+  if (row) { await db.put(name, row); cache.get(name)!.set(id, row); } else { await db.delete(name, id); cache.get(name)!.delete(id); }
+  emit(name);
+}
+
+let markLoaded: () => void = () => {};
+/** Resolves once local data is in memory, so cloud sync never compares against an empty cache. */
+export const loaded = new Promise<void>((r) => { markLoaded = r; });
+
 export async function loadAll() {
   const db = await getDb();
   for (const s of STORES) {
@@ -25,6 +39,7 @@ export async function loadAll() {
     for (const r of (await db.getAll(s)) as Base[]) m.set(r.id, r);
     emit(s);
   }
+  markLoaded();
   // ask the browser not to evict our data under storage pressure (best effort)
   try { await navigator.storage?.persist?.(); } catch { /* ignore */ }
 }
@@ -41,12 +56,12 @@ export async function save<T extends Base>(name: StoreName, item: Omit<T, 'id' |
   const existing = item.id ? cache.get(name)!.get(item.id) : undefined;
   const row = { ...item, id: item.id ?? uid(), createdAt: existing?.createdAt ?? item.createdAt ?? nowIso(), updatedAt: nowIso() } as T;
   await (await getDb()).put(name, row);
-  cache.get(name)!.set(row.id, row); emit(name);
+  cache.get(name)!.set(row.id, row); emit(name); hook?.save(name, row);
   return row;
 }
 export async function remove(name: StoreName, id: string) {
   await (await getDb()).delete(name, id);
-  cache.get(name)!.delete(id); emit(name);
+  cache.get(name)!.delete(id); emit(name); hook?.remove(name, id);
 }
 
 export function useCollection<T extends Base>(name: StoreName): T[] {

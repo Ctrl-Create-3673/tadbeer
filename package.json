@@ -1,7 +1,7 @@
 {
   "name": "hijri-life-planner",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -54,10 +54,17 @@
     },
     "mac": {
       "target": [
-        "dmg"
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
       ],
       "category": "public.app-category.productivity",
-      "identity": null
+      "identity": null,
+      "artifactName": "Tadbeer-mac-${arch}.${ext}"
     },
     "win": {
       "target": [
@@ -66,7 +73,8 @@
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "Tadbeer-Setup.${ext}"
     }
   }
 }

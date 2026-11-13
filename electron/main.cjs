@@ -28,7 +28,7 @@ app.whenReady().then(async () => {
   const port = await serve();
   const win = new BrowserWindow({ width: 1280, height: 860, minWidth: 380, minHeight: 600, title: 'Tadbeer', backgroundColor: '#f6f5f0', autoHideMenuBar: true });
   win.webContents.setWindowOpenHandler(({ url }) => {
-    if (/^https:\/\/accounts\.google\.com\//.test(url)) return { action: 'allow' }; // Google sign-in popup
+    if (/^https:\/\/(accounts\.google\.com|[a-z0-9-]+\.firebaseapp\.com)\//.test(url)) return { action: 'allow' }; // Firebase sign-in popup (starts on firebaseapp.com, then Google)
     void shell.openExternal(url); return { action: 'deny' };
   });
   await win.loadURL(`http://localhost:${port}/`);

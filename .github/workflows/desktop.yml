@@ -1,31 +1,46 @@
 name: Build desktop apps
 on:
   workflow_dispatch:
+    inputs:
+      platform: { description: 'mac, win or all', default: all }
+      tag: { description: 'Release tag to attach the files to (optional)', default: '' }
   push:
     tags: ['v*']
 permissions: { contents: write }
 jobs:
-  build:
-    strategy:
-      matrix: { os: [macos-latest, windows-latest] }
-    runs-on: ${{ matrix.os }}
+  mac:
+    if: github.event_name == 'push' || inputs.platform != 'win'
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: npm }
       - run: npm ci
       - run: npm run build
-      - run: npx electron-builder ${{ matrix.os == 'macos-latest' && '--mac' || '--win' }} --publish never
+      - run: npx electron-builder ${{ runner.os == 'macOS' && '--mac' || '--win' }} --publish never
         env: { CSC_IDENTITY_AUTO_DISCOVERY: 'false' }
-      - uses: actions/upload-artifact@v4
+      - uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/') || inputs.tag != ''
         with:
-          name: tadbeer-${{ matrix.os }}
-          path: |
+          tag_name: ${{ inputs.tag || github.ref_name }}
+          files: |
             release/*.dmg
             release/*.exe
+  win:
+    if: github.event_name == 'push' || inputs.platform != 'mac'
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run build
+      - run: npx electron-builder ${{ runner.os == 'macOS' && '--mac' || '--win' }} --publish never
+        env: { CSC_IDENTITY_AUTO_DISCOVERY: 'false' }
       - uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/') || inputs.tag != ''
         with:
+          tag_name: ${{ inputs.tag || github.ref_name }}
           files: |
             release/*.dmg
             release/*.exe

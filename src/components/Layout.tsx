@@ -1,4 +1,4 @@
-import { Bell, MessageSquare, CalendarDays, CalendarRange, CheckSquare, FileDown, LayoutDashboard, Menu, NotebookPen, Plus, Search, Settings as Cog, Star, X, CalendarPlus, Download } from 'lucide-react';
+import { Bell, MessageSquare, CalendarDays, CalendarRange, CheckSquare, FileDown, LayoutDashboard, Menu, NotebookPen, Plus, Search, Settings as Cog, Star, X, CalendarPlus, Download, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { missingFontFiles } from '../styles/fonts.config';
@@ -6,6 +6,7 @@ import { useCollection } from '../services/storage/db';
 import type { CalEvent, Note, Reminder, Task } from '../types';
 import { useReminderScheduler } from '../features/reminders/useScheduler';
 import { useAutoSync } from '../features/google/useAutoSync';
+import { useInvites } from '../services/google/invites';
 import { useAccount } from '../services/google/account';
 import { useGoogleLogin } from '../features/google/GoogleCard';
 import { useApp, type EditorKind } from './AppContext';
@@ -19,6 +20,7 @@ const NAV = [
   { to: '/tasks', label: 'Tasks', icon: CheckSquare }, { to: '/events', label: 'Events', icon: Star },
   { to: '/notes', label: 'Notes', icon: NotebookPen }, { to: '/reminders', label: 'Reminders', icon: Bell },
   { to: '/planner', label: 'Planner', icon: CalendarRange }, { to: '/print', label: 'Print PDF', icon: FileDown },
+  { to: '/invites', label: 'Invites', icon: Users },
   { to: '/download', label: 'Get the app', icon: Download },
   { to: '/feedback', label: 'Feedback', icon: MessageSquare },
   { to: '/settings', label: 'Settings', icon: Cog },
@@ -45,9 +47,9 @@ export function Layout() {
   const [menu, setMenu] = useState(false), [search, setSearch] = useState(false), [quick, setQuick] = useState(false);
   const { openEditor } = useApp(); useReminderScheduler(); useAutoSync(); const me = useAccount(); const gLogin = useGoogleLogin(); const nav = useNavigate();
   useEffect(() => { const k = (e: KeyboardEvent) => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); setSearch(true); } }; document.addEventListener('keydown', k); return () => document.removeEventListener('keydown', k); }, []);
-  const missing = missingFontFiles();
+  const missing = missingFontFiles(); const pending = useInvites().incoming.filter((i) => i.status === 'pending').length;
   const link = ({ isActive }: { isActive: boolean }) => cx('flex items-center gap-3 rounded-lg px-3 py-2 text-sm', isActive ? 'bg-brand text-bg' : 'hover:bg-brand-soft');
-  const navList = <nav aria-label="Main" className="grid gap-1">{NAV.map(({ to, label, icon: I }) => <NavLink key={to} to={to} end={to === '/'} data-tour={`nav-${to}`} className={link} onClick={() => setMenu(false)}><I size={18} />{label}</NavLink>)}</nav>;
+  const navList = <nav aria-label="Main" className="grid gap-1">{NAV.map(({ to, label, icon: I }) => <NavLink key={to} to={to} end={to === '/'} data-tour={`nav-${to}`} className={link} onClick={() => setMenu(false)}><I size={18} />{label}{to === '/invites' && pending > 0 && <span className="ms-auto rounded-full bg-burgundy px-1.5 text-xs text-white">{pending}</span>}</NavLink>)}</nav>;
   return <div className="flex min-h-full">
     <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-[70] focus:rounded focus:bg-surface focus:p-2">Skip to content</a>
     <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col gap-4 border-e border-line bg-surface p-4 md:flex">

@@ -6,6 +6,20 @@ service cloud.firestore {
       allow read, write: if request.auth != null && request.auth.uid == uid;
     }
 
+    // invites: sender creates, the addressed friend answers (status only), either side can delete
+    match /invites/{id} {
+      allow create: if request.auth != null && request.resource.data.fromUid == request.auth.uid
+        && request.resource.data.keys().hasOnly(['fromUid', 'fromName', 'fromEmail', 'toEmail', 'store', 'json', 'at', 'status'])
+        && request.resource.data.status == 'pending' && request.resource.data.store in ['events', 'tasks']
+        && request.resource.data.toEmail is string && request.resource.data.toEmail.size() <= 200
+        && request.resource.data.json is string && request.resource.data.json.size() <= 20000;
+      allow read, delete: if request.auth != null && request.auth.token.email_verified
+        && (resource.data.fromUid == request.auth.uid || resource.data.toEmail == request.auth.token.email);
+      allow update: if request.auth != null && request.auth.token.email_verified && resource.data.toEmail == request.auth.token.email
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+        && request.resource.data.status in ['accepted', 'declined'];
+    }
+
     // anyone may send feedback (write only; only the owner reads it in the Firebase console)
     match /feedback/{id} {
       allow create: if request.resource.data.keys().hasOnly(['mood', 'kind', 'used', 'message', 'email', 'at', 'app'])

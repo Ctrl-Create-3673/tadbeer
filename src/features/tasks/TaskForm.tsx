@@ -1,4 +1,5 @@
 import { Plus, Trash2 } from 'lucide-react';
+import { ShareButton } from '../google/ShareButton';
 import { useState } from 'react';
 import { useApp } from '../../components/AppContext';
 import { CategorySelect } from '../../components/CategorySelect';
@@ -34,7 +35,7 @@ export function TaskForm({ id, date }: { id?: string; date?: string }) {
   };
   return <Modal title={id ? 'Edit task' : 'New task'} onClose={closeEditor} footer={<>
     {id && <Button variant="danger" className="me-auto" onClick={del}><Trash2 size={15} />Delete</Button>}
-    <Button onClick={closeEditor}>Cancel</Button><Button variant="primary" onClick={(e) => submit(e as never)}>Save task</Button></>}>
+    {id && <ShareButton store="tasks" id={id} title={t.title} />}<Button onClick={closeEditor}>Cancel</Button><Button variant="primary" onClick={(e) => submit(e as never)}>Save task</Button></>}>
     <form onSubmit={submit} className="grid gap-3">
       {err && <p role="alert" className="rounded-lg bg-burgundy/10 px-3 py-2 text-sm text-burgundy">{err}</p>}
       <Field label="Title"><Input value={t.title} onChange={(e) => set('title', e.target.value)} className="writing" required /></Field>

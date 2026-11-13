@@ -9,6 +9,7 @@ import type { CalEvent } from '../../types';
 import { EVENT_COLORS } from '../../utils/theme';
 import { validateEvent } from '../../utils/validate';
 import { addMinutesLocal } from '../../services/notifications/scheduler';
+import { ShareButton } from '../google/ShareButton';
 import { removeLinkedReminders, syncLinkedReminder } from '../reminders/linked';
 
 const blank = (date: string): Omit<CalEvent, 'id' | 'createdAt' | 'updatedAt'> => ({
@@ -34,7 +35,7 @@ export function EventForm({ id, date }: { id?: string; date?: string }) {
   };
   return <Modal title={id ? 'Edit event' : 'New event'} onClose={closeEditor} footer={<>
     {id && <Button variant="danger" className="me-auto" onClick={del}><Trash2 size={15} />Delete</Button>}
-    <Button onClick={closeEditor}>Cancel</Button><Button variant="primary" onClick={(x) => submit(x as never)}>Save event</Button></>}>
+    {id && <ShareButton store="events" id={id} title={e.title} />}<Button onClick={closeEditor}>Cancel</Button><Button variant="primary" onClick={(x) => submit(x as never)}>Save event</Button></>}>
     <form onSubmit={submit} className="grid gap-3">
       {err && <p role="alert" className="rounded-lg bg-burgundy/10 px-3 py-2 text-sm text-burgundy">{err}</p>}
       <Field label="Title"><Input className="writing" value={e.title} onChange={(x) => set('title', x.target.value)} required /></Field>

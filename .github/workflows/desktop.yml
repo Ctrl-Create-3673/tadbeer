@@ -1,46 +1,69 @@
-name: Build desktop apps
+name: Build Tadbeer for macOS
+
 on:
   workflow_dispatch:
     inputs:
-      platform: { description: 'mac, win or all', default: all }
-      tag: { description: 'Release tag to attach the files to (optional)', default: '' }
+      tag:
+        description: "Optional existing release tag to attach the DMG to"
+        required: false
+        type: string
   push:
-    tags: ['v*']
-permissions: { contents: write }
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tadbeer-mac-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   mac:
-    if: github.event_name == 'push' || inputs.platform != 'win'
+    name: Build macOS app
     runs-on: macos-latest
+    timeout-minutes: 45
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: npm }
-      - run: npm ci
-      - run: npm run build
-      - run: npx electron-builder ${{ runner.os == 'macOS' && '--mac' || '--win' }} --publish never
-        env: { CSC_IDENTITY_AUTO_DISCOVERY: 'false' }
-      - uses: softprops/action-gh-release@v2
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Cache electron-builder downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Caches/electron-builder
+          key: mac-electron-builder-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            mac-electron-builder-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Package macOS app
+        run: npx electron-builder --mac --publish never
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+
+      - name: Upload macOS build
+        uses: actions/upload-artifact@v4
+        with:
+          name: Tadbeer-macOS
+          path: release/*.dmg
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Attach DMG to GitHub Release
         if: startsWith(github.ref, 'refs/tags/') || inputs.tag != ''
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ inputs.tag || github.ref_name }}
-          files: |
-            release/*.dmg
-            release/*.exe
-  win:
-    if: github.event_name == 'push' || inputs.platform != 'mac'
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: npm }
-      - run: npm ci
-      - run: npm run build
-      - run: npx electron-builder ${{ runner.os == 'macOS' && '--mac' || '--win' }} --publish never
-        env: { CSC_IDENTITY_AUTO_DISCOVERY: 'false' }
-      - uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/') || inputs.tag != ''
-        with:
-          tag_name: ${{ inputs.tag || github.ref_name }}
-          files: |
-            release/*.dmg
-            release/*.exe
+          files: release/*.dmg

@@ -15,7 +15,7 @@ export function useReminderScheduler() {
       for (const r of getAll<Reminder>('reminders')) {
         if (r.completed || r.at > now || r.lastFiredAt === r.at) continue;
         toast(`Reminder: ${r.title}`);
-        if (s.notifications) notify('Hijri Life Planner', r.title);
+        if (s.notifications) notify('Tadbeer', r.title);
         // recurring: roll forward past "now" (skipping missed occurrences); one-off: remember it fired
         if (r.recurrence === 'none') await save<Reminder>('reminders', { ...r, lastFiredAt: r.at });
         else { let next = r; for (let i = 0; i < 400 && next.at <= now; i++) next = { ...next, at: nextOccurrence(next, calRef.current) }; await save<Reminder>('reminders', { ...r, at: next.at, lastFiredAt: null }); }

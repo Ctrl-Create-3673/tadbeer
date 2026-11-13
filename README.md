@@ -1,4 +1,6 @@
-# Hijri Life Planner
+# Tadbeer (تدبير)
+
+Plan with Purpose. Organise with Clarity. Hijri calendar, tasks, events and notes.
 
 A personal planner built around the **Mumineen (Fatimid tabular) Hijri calendar**: dashboard, calendar (month / year / week / day),
 tasks, events, notes, reminders, monthly & yearly planners, and an A4-landscape printable PDF generator.
@@ -112,7 +114,7 @@ The build is static with relative asset paths (`base: './'`) and hash routing, s
 ```bash
 git init -b main
 git add .
-git commit -m "Hijri Life Planner"
+git commit -m "Tadbeer"
 git remote add origin https://github.com/<your-user>/<your-repo>.git
 git push -u origin main
 ```

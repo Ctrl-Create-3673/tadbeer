@@ -30,7 +30,7 @@ export function parseBackup(text: string): BackupFile {
   let j: unknown;
   try { j = JSON.parse(text); } catch { throw new Error('This file is not valid JSON.'); }
   const b = j as BackupFile;
-  if (!b || b.app !== 'hijri-life-planner' || b.version !== 1 || typeof b.data !== 'object') throw new Error('This is not a Hijri Life Planner backup.');
+  if (!b || b.app !== 'hijri-life-planner' || b.version !== 1 || typeof b.data !== 'object') throw new Error('This is not a Tadbeer backup.');
   for (const [store, rows] of Object.entries(b.data))
     if (!Array.isArray(rows) || rows.some((r) => !r || typeof r.id !== 'string')) throw new Error(`Backup section "${store}" is malformed.`);
   return b;

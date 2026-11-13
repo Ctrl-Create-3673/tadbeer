@@ -46,7 +46,7 @@ export function Layout() {
   return <div className="flex min-h-full">
     <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-[70] focus:rounded focus:bg-surface focus:p-2">Skip to content</a>
     <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col gap-4 border-e border-line bg-surface p-4 md:flex">
-      <div><div className="text-lg font-bold text-brand">Hijri Life Planner</div><div className="ar text-sm text-muted">مفكرة الحياة الهجرية</div></div>
+      <div className="flex items-center gap-3"><img src={`${import.meta.env.BASE_URL}tadbeer-mark.svg`} alt="" width={36} height={36} /><div><div className="text-lg font-bold leading-tight tracking-wide text-brand">TADBEER</div><div className="ar text-sm leading-tight text-muted">تدبير</div></div></div>
       {navList}
     </aside>
     <div className="flex min-w-0 flex-1 flex-col">
@@ -69,7 +69,7 @@ export function Layout() {
       {NAV.slice(0, 4).map(({ to, label, icon: I }) => <NavLink key={to} to={to} end={to === '/'} className={({ isActive }) => cx('flex flex-col items-center gap-0.5 py-2 text-[11px]', isActive ? 'text-brand' : 'text-muted')}><I size={20} />{label}</NavLink>)}
       <button className="flex flex-col items-center gap-0.5 py-2 text-[11px] text-muted" onClick={() => setMenu(true)}><Menu size={20} />More</button>
     </nav>
-    {menu && <div className="fixed inset-0 z-50 md:hidden" onMouseDown={(e) => e.target === e.currentTarget && setMenu(false)}><div className="absolute inset-0 bg-black/40" /><div role="dialog" aria-label="Menu" className="fade-in absolute inset-y-0 start-0 w-72 bg-surface p-4"><div className="mb-4 flex items-center justify-between"><b className="text-brand">Hijri Life Planner</b><IconButton label="Close menu" onClick={() => setMenu(false)}><X size={18} /></IconButton></div>{navList}</div></div>}
+    {menu && <div className="fixed inset-0 z-50 md:hidden" onMouseDown={(e) => e.target === e.currentTarget && setMenu(false)}><div className="absolute inset-0 bg-black/40" /><div role="dialog" aria-label="Menu" className="fade-in absolute inset-y-0 start-0 w-72 bg-surface p-4"><div className="mb-4 flex items-center justify-between"><b className="tracking-wide text-brand">TADBEER</b><IconButton label="Close menu" onClick={() => setMenu(false)}><X size={18} /></IconButton></div>{navList}</div></div>}
     {search && <GlobalSearch onClose={() => setSearch(false)} />}
   </div>;
 }

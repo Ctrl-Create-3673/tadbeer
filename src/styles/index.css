@@ -2,13 +2,13 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 :root {
-  --bg: #f6f5f0; --surface: #fffefa; --ink: #26302b; --muted: #66716a; --line: #dcdacd;
-  --brand: #4b6b52; --brand-soft: #e6ece3; --burgundy: #7a2e3b; --gold: #a98122;
+  --bg: #f5f6fa; --surface: #ffffff; --ink: #12142a; --muted: #5c617c; --line: #dadeeb;
+  --brand: #3547d6; --brand-soft: #e8ebfb; --burgundy: #c4402a; --gold: #6d4ce0;
   color-scheme: light;
 }
 [data-theme=dark] {
-  --bg: #141815; --surface: #1c221e; --ink: #e7ebe4; --muted: #98a39b; --line: #2f3832;
-  --brand: #8fb08f; --brand-soft: #243026; --burgundy: #d58f9b; --gold: #d9b45a;
+  --bg: #0b0d17; --surface: #151829; --ink: #eceefa; --muted: #9aa0bf; --line: #272b45;
+  --brand: #8c99ff; --brand-soft: #1d2350; --burgundy: #ff8c78; --gold: #b7a0ff;
   color-scheme: dark;
 }
 @theme inline {

@@ -16,7 +16,7 @@ export interface PdfResult { bytes: Uint8Array; warnings: string[]; pages: numbe
 
 const W = 841.89, H = 595.28, M = 28;
 const hex = (h: string) => rgb(parseInt(h.slice(1, 3), 16) / 255, parseInt(h.slice(3, 5), 16) / 255, parseInt(h.slice(5, 7), 16) / 255);
-const INK = hex('#26302b'), BRAND = hex('#4b6b52'), BURG = hex('#7a2e3b'), GOLD = hex('#a98122'), LINE = hex('#c9c7b8'), SOFT = hex('#f3f1e8'), MUTED = hex('#6b756e');
+const INK = hex('#12142a'), BRAND = hex('#3547d6'), BURG = hex('#d9503a'), GOLD = hex('#7b5cf0'), LINE = hex('#d5d8e8'), SOFT = hex('#f1f2fa'), MUTED = hex('#5c617c');
 
 type Kind = 'latin' | 'arabic' | 'digits';
 type Style = Record<Kind, FontRole>;
@@ -101,7 +101,7 @@ const gregSpan = (a: string, b: string) => {
 export async function generatePdf(o: PdfOptions): Promise<PdfResult> {
   const hbm = await import('harfbuzzjs');
   const doc = await PDFDocument.create(); doc.registerFontkit(fontkit);
-  doc.setTitle(o.month ? `${MONTH_EN[o.month - 1]} ${o.year} H` : `Hijri year ${o.year}`); doc.setCreator('Hijri Life Planner');
+  doc.setTitle(o.month ? `${MONTH_EN[o.month - 1]} ${o.year} H` : `Hijri year ${o.year}`); doc.setCreator('Tadbeer');
   const faces = new Map<string, Face>();
   for (const id of new Set(Object.values(o.fonts))) {
     const def = fontById(id); const buf = await o.loadFont(def); // throws a clear error if the file is missing
@@ -117,7 +117,7 @@ export async function generatePdf(o: PdfOptions): Promise<PdfResult> {
   const footer = (page: PDFPage, label: string, n: number) => {
     const bandW = (W - 2 * M) / 7;
     for (let i = 0; i < 7; i++) page.drawRectangle({ x: M + i * bandW, y: 30, width: bandW, height: 5, color: hex(WEEKDAY_COLORS[i]) });
-    w.draw(page, 'Hijri Life Planner', { x: M, y: 16, size: 8, color: MUTED });
+    w.draw(page, 'Tadbeer', { x: M, y: 16, size: 8, color: MUTED });
     w.draw(page, label, { x: W / 2, y: 16, size: 8, color: MUTED, align: 'center' });
     w.draw(page, `Page ${n} of ${total}`, { x: W - M, y: 16, size: 8, color: MUTED, align: 'right' });
   };

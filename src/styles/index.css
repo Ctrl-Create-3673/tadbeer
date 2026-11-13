@@ -38,3 +38,10 @@ input, select, textarea, button { font-family: inherit; }
 .rte ul[data-checklist] li::before { content: "\2610"; position: absolute; inset-inline-start: 0; cursor: pointer; color: var(--brand); }
 .rte ul[data-checklist] li[data-done]::before { content: "\2611"; }
 .rte ul[data-checklist] li[data-done] { text-decoration: line-through; color: var(--muted); }
+
+/* splash: fade in, hold, fade out over 4.5s */
+.splash-logo { animation: splash-logo 4.5s ease-in-out both; }
+.splash { animation: splash-bg 4.5s linear both; }
+@keyframes splash-logo { 0% { opacity: 0; } 25% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes splash-bg { 0%, 75% { opacity: 1; } 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .splash-logo, .splash { animation-duration: 4.5s !important; } }

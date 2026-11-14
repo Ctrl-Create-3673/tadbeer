@@ -16,7 +16,7 @@ const drag = { WebkitAppRegion: 'drag' } as React.CSSProperties, noDrag = { Webk
 export function WidgetPage() {
   const cal = useCalendar(), today = useToday(), [s] = useSettings();
   const tasks = useCollection<Task>('tasks'), events = useCollection<CalEvent>('events');
-  const solid = location.hash.includes('solid'); // OS has no blur material: use an opaque panel
+  const solid = location.hash.includes('solid') || !window.tadbeerDesktop; // OS has no blur material: use an opaque panel
   useEffect(() => {
     const mq = matchMedia('(prefers-color-scheme: dark)');
     const set = () => { document.documentElement.dataset.theme = mq.matches ? 'dark' : 'light'; };
@@ -38,8 +38,8 @@ export function WidgetPage() {
         <div className="ar text-brand">{MONTH_AR[h.month - 1]}</div>
         <div className="text-sm text-muted">{gregLabel(today, s)}</div></div>
       <div style={noDrag} className="flex gap-1">
-        <button aria-label="Open Tadbeer" title="Open Tadbeer" className="rounded-lg p-1.5 text-muted hover:bg-brand-soft" onClick={() => window.tadbeerDesktop?.openApp()}><ExternalLink size={16} /></button>
-        <button aria-label="Close widget" title="Close widget" className="rounded-lg p-1.5 text-muted hover:bg-brand-soft" onClick={() => window.tadbeerDesktop?.closeWidget()}><X size={16} /></button>
+        <button aria-label="Open Tadbeer" title="Open Tadbeer" className="rounded-lg p-1.5 text-muted hover:bg-brand-soft" onClick={() => (window.tadbeerDesktop ? window.tadbeerDesktop.openApp() : window.open(location.pathname, '_blank'))}><ExternalLink size={16} /></button>
+        <button aria-label="Close widget" title="Close widget" className="rounded-lg p-1.5 text-muted hover:bg-brand-soft" onClick={() => (window.tadbeerDesktop ? window.tadbeerDesktop.closeWidget() : window.close())}><X size={16} /></button>
       </div>
     </div>
     <Section title="Tasks">{due.length === 0 ? <p className="text-sm text-muted">Nothing due today.</p> : due.map((t) => <li key={t.id} className="writing truncate text-sm">• {t.title}</li>)}</Section>

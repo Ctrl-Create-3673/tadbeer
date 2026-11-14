@@ -1,5 +1,5 @@
 import { DownloadBanner } from '../components/DownloadBanner';
-import { Bell, CalendarPlus, CheckSquare, NotebookPen, Plus } from 'lucide-react';
+import { Bell, LayoutGrid, CalendarPlus, CheckSquare, NotebookPen, Plus } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../components/AppContext';
 import { Button, Card, EmptyState } from '../components/ui';
@@ -42,6 +42,7 @@ export function Dashboard() {
       <Button variant="soft" onClick={() => openEditor({ kind: 'event' })}><CalendarPlus size={16} />Add event</Button>
       <Button variant="soft" onClick={() => openEditor({ kind: 'note' })}><NotebookPen size={16} />Add note</Button>
       <Button variant="soft" onClick={() => openEditor({ kind: 'reminder' })}><Bell size={16} />Set reminder</Button>
+      {!window.tadbeerDesktop && <Button variant="soft" onClick={() => window.open(`${location.pathname}#/widget`, 'tadbeer-widget', 'popup,width=320,height=380')}><LayoutGrid size={16} />Open widget</Button>}
     </div>
     <div className="grid gap-4 lg:grid-cols-3">
       <Card><h2 className="mb-3 font-semibold">Today’s tasks</h2>

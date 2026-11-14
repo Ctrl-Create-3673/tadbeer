@@ -72,7 +72,12 @@ export function Layout() {
         </div>
       </header>
       {missing.length > 0 && <div role="alert" className="border-b border-burgundy/30 bg-burgundy/10 px-6 py-2 text-sm text-burgundy">Font files not found in src/assets/fonts/: {missing.map((f) => f.file).join(', ')}. The browser’s generic sans-serif is being used for them.</div>}
-      <main id="main" className="flex-1 p-3 pb-24 md:p-6 md:pb-6"><Outlet /></main>
+      <main id="main" className="flex-1 p-3 pb-6 md:p-6 md:pb-6"><Outlet /></main>
+      <footer className="mb-16 border-t border-line px-3 py-5 text-center text-sm text-muted md:mb-0 md:px-6">
+        <div className="font-semibold text-ink">Tadbeer <span className="ar">تدبير</span></div>
+        <div className="mt-1">Developed by Burhanuddin Saylawala - Ctrl + Create</div>
+        <div className="mt-1">© 2026 <a className="underline hover:text-brand" href={`${import.meta.env.BASE_URL}privacy.html`} target="_blank" rel="noreferrer">Privacy</a></div>
+      </footer>
     </div>
     <nav aria-label="Mobile" className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-line bg-surface md:hidden">
       {NAV.slice(0, 4).map(({ to, label, icon: I }) => <NavLink key={to} to={to} end={to === '/'} className={({ isActive }) => cx('flex flex-col items-center gap-0.5 py-2 text-[11px]', isActive ? 'text-brand' : 'text-muted')}><I size={20} />{label}</NavLink>)}

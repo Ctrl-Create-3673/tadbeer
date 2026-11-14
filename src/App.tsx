@@ -21,6 +21,7 @@ import { FeedbackPage } from './pages/FeedbackPage';
 import { TasksPage } from './pages/TasksPage';
 import { Splash } from './components/Splash';
 import { Tour } from './components/Tour';
+import { WidgetPage } from './pages/WidgetPage';
 
 function Shell() {
   const [s] = useSettings();
@@ -38,5 +39,6 @@ export default function App() {
   useEffect(() => { loadAll().then(seedNoteCategories).then(() => setState('ready')).catch((e) => setState({ error: String(e?.message ?? e) })); }, []);
   if (state === 'loading') return <div role="status" className="grid h-full place-items-center text-muted">Loading your planner…</div>;
   if (typeof state === 'object') return <div role="alert" className="mx-auto mt-20 max-w-md rounded-2xl border border-burgundy p-6"><b>Storage is unavailable.</b><p className="mt-2 text-sm">This browser blocked IndexedDB (private mode or disabled site data), so nothing could be saved. Open the app in a normal window. Details: {state.error}</p></div>;
+  if (location.hash.startsWith('#/widget')) return <WidgetPage />;
   return <><AppProvider><Shell /></AppProvider><Splash /></>;
 }

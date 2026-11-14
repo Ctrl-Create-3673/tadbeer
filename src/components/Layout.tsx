@@ -75,7 +75,7 @@ export function Layout() {
       <main id="main" className="flex-1 p-3 pb-6 md:p-6 md:pb-6"><Outlet /></main>
       <footer className="mb-16 border-t border-line px-3 py-5 text-center text-sm text-muted md:mb-0 md:px-6">
         <div className="font-semibold text-ink">Tadbeer <span className="ar">تدبير</span></div>
-        <div className="mt-1">Developed by Burhanuddin Saylawala - Ctrl + Create</div>
+        <div className="mt-1">Developed by Burhanuddin Saylawala - <a className="underline hover:text-brand" href="https://ctrl-create-3673.github.io/ctrl-create-studio/" target="_blank" rel="noreferrer">Ctrl + Create</a></div>
         <div className="mt-1">© 2026 <a className="underline hover:text-brand" href={`${import.meta.env.BASE_URL}privacy.html`} target="_blank" rel="noreferrer">Privacy</a></div>
       </footer>
     </div>

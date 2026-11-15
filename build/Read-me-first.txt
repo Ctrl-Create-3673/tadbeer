@@ -1,0 +1,29 @@
+TADBEER FOR MAC - HOW TO OPEN IT THE FIRST TIME
+================================================
+
+Tadbeer is not sold through Apple, so your Mac asks you to approve it once.
+This is normal. It takes about a minute and you only do it one time.
+
+1. Double-click Tadbeer-mac-arm64.dmg.
+2. Drag the Tadbeer icon onto the Applications folder.
+3. Open Applications and double-click Tadbeer.
+4. A message says Apple could not verify "Tadbeer".
+   Click "Done". Do NOT click "Move to Trash".
+5. Open System Settings > Privacy & Security.
+6. Scroll down to the Security section.
+   - "Allow applications from" must be set to "App Store & Known Developers".
+   - Just below it you will see: "Tadbeer" was blocked to protect your Mac.
+   Click "Open Anyway" and enter your Mac password or use Touch ID.
+7. Click "Open" if your Mac asks once more.
+
+Tadbeer now opens normally every time, along with its small widget.
+
+If it says "Tadbeer is damaged and can't be opened":
+Open Terminal and run this, then open Tadbeer again:
+
+    xattr -cr /Applications/Tadbeer.app
+
+Prefer no steps at all? Open https://tadbeer-edb8b.web.app in Safari or Chrome
+and add it to your Dock or Home Screen. The website version needs no approval.
+
+For Macs with Apple chips (M1 and newer).

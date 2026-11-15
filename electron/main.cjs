@@ -67,13 +67,16 @@ const toggleWidget = () => (widget && !widget.isDestroyed() ? closeWidget() : op
 app.whenReady().then(async () => {
   port = await serve();
   ipcMain.on('open-app', openMain); ipcMain.on('close-widget', closeWidget);
-  // Tray (Windows/Linux) or menu-bar icon (macOS) keeps the widget reachable when the main window is closed.
-  tray = new Tray(nativeImage.createFromPath(path.join(__dirname, '..', 'build', 'icon.png')).resize({ width: 18, height: 18 }));
-  tray.setToolTip('Tadbeer');
-  tray.setContextMenu(Menu.buildFromTemplate([{ label: 'Open Tadbeer', click: openMain }, { label: 'Show / hide widget', click: toggleWidget }, { type: 'separator' }, { role: 'quit' }]));
-  tray.on('click', toggleWidget);
   openMain();
   if (readState().open !== false) openWidget(); // widget is on by default and remembers being closed
+  // Tray (Windows/Linux) or menu-bar icon (macOS) keeps the widget reachable when the main window is closed.
+  try {
+    tray = new Tray(nativeImage.createFromPath(path.join(__dirname, '..', 'build', 'icon.png')).resize({ width: 18, height: 18 }));
+    tray.setToolTip('Tadbeer');
+    tray.setContextMenu(Menu.buildFromTemplate([{ label: 'Open Tadbeer', click: openMain }, { label: 'Show / hide widget', click: toggleWidget }, { type: 'separator' }, { role: 'quit' }]));
+    tray.on('click', toggleWidget);
+  } catch { tray = null; /* the windows still work without the tray icon */ }
+  app.dock?.setMenu(Menu.buildFromTemplate([{ label: 'Show / hide widget', click: toggleWidget }])); // macOS: right-click the Dock icon
 });
 app.on('activate', openMain); // macOS dock click
 // Stay alive while the widget is open; quit when nothing is left.

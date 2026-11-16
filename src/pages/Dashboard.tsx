@@ -2,7 +2,8 @@ import { DownloadBanner } from '../components/DownloadBanner';
 import { Bell, LayoutGrid, CalendarPlus, CheckSquare, NotebookPen, Plus } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../components/AppContext';
-import { Button, Card, EmptyState } from '../components/ui';
+import { useState } from 'react';
+import { Button, Card, EmptyState, Modal } from '../components/ui';
 import { DateBadge } from '../components/DateBadge';
 import { useCalendar, useToday } from '../hooks/useCalendar';
 import { MONTH_AR, MONTH_EN } from '../services/hijri/names';
@@ -18,6 +19,7 @@ const Stat = ({ label, value, tone }: { label: string; value: number; tone?: str
   <div className="rounded-xl bg-bg p-3 text-center"><div className={`text-2xl font-semibold ${tone ?? ''}`}>{value}</div><div className="text-xs text-muted">{label}</div></div>;
 
 export function Dashboard() {
+  const [widgetHelp, setWidgetHelp] = useState(false);
   const nav = useNavigate(); const cal = useCalendar(); const today = useToday(); const [s] = useSettings(); const { openEditor } = useApp();
   const tasks = useCollection<Task>('tasks'), events = useCollection<CalEvent>('events'), notes = useCollection<Note>('notes');
   const h = cal.fromIso(today); const month = cal.monthDays(h.year, h.month);
@@ -42,7 +44,12 @@ export function Dashboard() {
       <Button variant="soft" onClick={() => openEditor({ kind: 'event' })}><CalendarPlus size={16} />Add event</Button>
       <Button variant="soft" onClick={() => openEditor({ kind: 'note' })}><NotebookPen size={16} />Add note</Button>
       <Button variant="soft" onClick={() => openEditor({ kind: 'reminder' })}><Bell size={16} />Set reminder</Button>
-      {!window.tadbeerDesktop && <Button variant="soft" onClick={() => window.open(`${location.pathname}#/widget`, 'tadbeer-widget', 'popup,width=320,height=380')}><LayoutGrid size={16} />Open widget</Button>}
+      <Button variant="soft" onClick={() => setWidgetHelp(true)}><LayoutGrid size={16} />Open widget</Button>
+      {widgetHelp && <Modal title="Open the widget" onClose={() => setWidgetHelp(false)} footer={<Button variant="primary" onClick={() => setWidgetHelp(false)}>Got it</Button>}>
+        {window.tadbeerDesktop
+          ? <ol className="list-decimal space-y-2 ps-5 text-sm"><li>Find the Tadbeer icon: in the Dock (Mac) or the tray near the clock (Windows). On Mac the top menu bar has one too.</li><li>Right-click it (Mac: also click the menu-bar icon).</li><li>Choose <b>Show / hide widget</b>.</li><li>The widget shows today's Hijri date, tasks and events, and updates when you change things in Tadbeer.</li></ol>
+          : <p className="text-sm">The widget is part of the desktop app for Mac and Windows. Install it from <Link className="font-medium text-brand underline" to="/download" onClick={() => setWidgetHelp(false)}>Get the app</Link>, then right-click the Tadbeer icon in the Dock or tray and choose <b>Show / hide widget</b>.</p>}
+      </Modal>}
     </div>
     <div className="grid gap-4 lg:grid-cols-3">
       <Card><h2 className="mb-3 font-semibold">Today’s tasks</h2>
